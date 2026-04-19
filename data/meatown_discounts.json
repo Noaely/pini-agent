@@ -1,0 +1,276 @@
+{
+  "source": "meatown",
+  "store_name": "פנחס הקצב",
+  "category": "הנחות",
+  "url": "https://orders.meatown.co.il/front/catering/1/2026-04-19",
+  "scraped_at": "2026-04-18T22:02:53.565296",
+  "discounts": [
+    {
+      "id": 15,
+      "title": "4 חבילות טחונים ב200",
+      "description": "",
+      "amount": 200,
+      "min_products": 4,
+      "applicable_products": [
+        {
+          "id": "507",
+          "name": "הקבב של פנחס",
+          "price": 55.0
+        },
+        {
+          "id": "508",
+          "name": "קבב פארוק טלה פיקנטי",
+          "price": 55.0
+        },
+        {
+          "id": "513",
+          "name": "נקניקיית פלורה מרגז",
+          "price": 55.0
+        },
+        {
+          "id": "514",
+          "name": "נקניקיית ארליך צ׳וריסוס",
+          "price": 55.0
+        },
+        {
+          "id": "515",
+          "name": "נקניקיית פישינזון צ׳וריסוס קלאסית",
+          "price": 55.0
+        },
+        {
+          "id": "516",
+          "name": "נקניקיית יהודל׳ה מיני מרגז",
+          "price": 55.0
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "title": "3 חבילות דים-סאם ב-100 ש״ח ",
+      "description": "",
+      "amount": 100,
+      "min_products": 3,
+      "applicable_products": [
+        {
+          "id": "481",
+          "name": "אגרול ירקות אסייתי",
+          "price": 39.9
+        },
+        {
+          "id": "482",
+          "name": "לחמניות באן מאודות",
+          "price": 39.9
+        },
+        {
+          "id": "483",
+          "name": "גיוזה עוף",
+          "price": 39.9
+        },
+        {
+          "id": "484",
+          "name": "מוצר 484",
+          "price": 0
+        },
+        {
+          "id": "485",
+          "name": "גיוזה בטטה",
+          "price": 39.9
+        },
+        {
+          "id": "486",
+          "name": "גיוזה בקר",
+          "price": 39.9
+        },
+        {
+          "id": "487",
+          "name": "גיוזה עוף פטריות ופקאן",
+          "price": 39.9
+        },
+        {
+          "id": "488",
+          "name": "מוצר 488",
+          "price": 0
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "אונטריב 2 קילו ב- 220 ש\"ח",
+      "description": "",
+      "amount": 220,
+      "min_products": 2,
+      "applicable_products": [
+        {
+          "id": "403",
+          "name": "אונטריב",
+          "price": 120.0
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "בריסקט 3 קילו ב-250 ש\"ח",
+      "description": "",
+      "amount": 250,
+      "min_products": 3,
+      "applicable_products": [
+        {
+          "id": "406",
+          "name": "בריסקט",
+          "price": 95.0
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "אוסובוקו או שריר 2 קילו ב-160 ש\"ח",
+      "description": "",
+      "amount": 160,
+      "min_products": 2,
+      "applicable_products": [
+        {
+          "id": "409",
+          "name": "שריר 8",
+          "price": 95.0
+        },
+        {
+          "id": "729",
+          "name": "אוסובוקו",
+          "price": 95.0
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "2 קילו בשר טחון טרי ב- 170 ש״ח",
+      "description": "",
+      "amount": 170,
+      "min_products": 2,
+      "applicable_products": [
+        {
+          "id": "421",
+          "name": "בשר טחון",
+          "price": 90.0
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "3 קילו כרעיים / שוקיים / ירכיים טרי ב-120 ש\"ח",
+      "description": "",
+      "amount": 120,
+      "min_products": 3,
+      "applicable_products": [
+        {
+          "id": "438",
+          "name": "כרעיים",
+          "price": 46.9
+        },
+        {
+          "id": "439",
+          "name": "ירך",
+          "price": 46.9
+        },
+        {
+          "id": "440",
+          "name": "שוק",
+          "price": 46.9
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "2 קילו כנף עוף ב-40 ש\"ח",
+      "description": "",
+      "amount": 40,
+      "min_products": 2,
+      "applicable_products": [
+        {
+          "id": "441",
+          "name": "כנף חצוי",
+          "price": 24.9
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "2 ק״ג עוף טחון ב-100",
+      "description": "",
+      "amount": 100,
+      "min_products": 2,
+      "applicable_products": [
+        {
+          "id": "453",
+          "name": "עוף טחון",
+          "price": 54.9
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "title": "נקניקיות ילדים של צורי 4 ב- 80 ש\"ח",
+      "description": "",
+      "amount": 80,
+      "min_products": 4,
+      "applicable_products": [
+        {
+          "id": "520",
+          "name": "נקניקיות וונדי",
+          "price": 24.9
+        },
+        {
+          "id": "521",
+          "name": "נקניקיות פיונה",
+          "price": 24.9
+        },
+        {
+          "id": "522",
+          "name": "נקניקיות אוקלהומה",
+          "price": 24.9
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "title": "חזה עוף שלם 2 ק״ג ב-100 ש״ח",
+      "description": "",
+      "amount": 100,
+      "min_products": 2,
+      "applicable_products": [
+        {
+          "id": "442",
+          "name": "חזה עוף שלם",
+          "price": 54.9
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "title": "מושט עם עור 3 ק״ג ב-100",
+      "description": "",
+      "amount": 100,
+      "min_products": 3,
+      "applicable_products": [
+        {
+          "id": "471",
+          "name": "אמנון עם עור קפוא",
+          "price": 39.9
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "title": "2 קילו קיט חלבון ב-150 ש״ח ",
+      "description": "",
+      "amount": 150,
+      "min_products": 2,
+      "applicable_products": [
+        {
+          "id": "456",
+          "name": "מוצר 456",
+          "price": 0
+        }
+      ]
+    }
+  ]
+}

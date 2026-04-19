@@ -1,0 +1,26 @@
+{
+  "session_id": "agent_011CaBgNxTAeHuJawZAWq92M",
+  "agent_name": "Pini's Butcher Assistant",
+  "goals": {
+    "primary": "Sales assistant for Pinchas the Butcher (פנחס הקצב)",
+    "description": "Help customers find products, check prices, recommend deals, and process orders"
+  },
+  "capabilities": [
+    "Browse menu by category",
+    "Search for products",
+    "Check product prices",
+    "Recommend active discounts",
+    "Calculate order totals with discounts",
+    "Process customer orders"
+  ],
+  "store_info": {
+    "name": "פנחס הקצב",
+    "name_en": "Pinchas the Butcher",
+    "source": "meatown",
+    "currency": "ILS"
+  },
+  "data_files": {
+    "menu": "data/meatown_menu.json",
+    "discounts": "data/meatown_discounts.json"
+  }
+}
