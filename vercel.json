@@ -1,0 +1,11 @@
+{
+  "buildCommand": "npm run build --workspace=ui",
+  "outputDirectory": "ui/dist",
+  "installCommand": "npm install",
+  "framework": "vite",
+  "env": {
+    "ANTHROPIC_API_KEY": "@anthropic_api_key",
+    "GREEN_API_INSTANCE_ID": "@green_api_instance_id",
+    "GREEN_API_TOKEN": "@green_api_token"
+  }
+}

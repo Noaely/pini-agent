@@ -1,7 +1,14 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
-export default function ChatInput({ onSend, disabled }) {
+export default function ChatInput({ onSend, disabled, injectedValue, onInjectedUsed }) {
   const [text, setText] = useState('')
+
+  useEffect(() => {
+    if (injectedValue) {
+      setText(injectedValue)
+      onInjectedUsed?.()
+    }
+  }, [injectedValue])
 
   const handleSubmit = (e) => {
     e.preventDefault()

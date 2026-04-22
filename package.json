@@ -1,0 +1,19 @@
+{
+  "name": "butcher-pini",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Butcher shop AI assistant",
+  "workspaces": [
+    "ui"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=ui",
+    "build": "npm run build --workspace=ui",
+    "preview": "npm run preview --workspace=ui",
+    "install:all": "npm install",
+    "start": "npm run dev"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
