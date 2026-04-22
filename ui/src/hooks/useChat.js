@@ -1,6 +1,6 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 
-const DEMO_MODE = false// שנה ל-false כשמפתח ה-API מוגדר
+const DEMO_MODE = false
 
 const INITIAL_MESSAGE = {
   content: 'שלום! ברוכים הבאים לפנחס הקצב. במה אוכל לעזור לכם היום?',
@@ -8,9 +8,21 @@ const INITIAL_MESSAGE = {
   time: new Date().toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })
 }
 
+async function logEvent(type, extra = {}) {
+  try {
+    await fetch('/api/analytics/event', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type, ...extra })
+    })
+  } catch {}
+}
+
+
 export function useChat() {
   const [messages, setMessages] = useState([INITIAL_MESSAGE])
   const [isLoading, setIsLoading] = useState(false)
+  const conversationStarted = useRef(false)
 
   const sendMessage = useCallback(async (text) => {
     const userMessage = {
@@ -21,6 +33,11 @@ export function useChat() {
 
     setMessages(prev => [...prev, userMessage])
     setIsLoading(true)
+
+    if (!conversationStarted.current) {
+      conversationStarted.current = true
+      logEvent('conversation_started')
+    }
 
     try {
       let content

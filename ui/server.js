@@ -90,7 +90,19 @@ ${customProductsSection}${answersSummary}
 3. כשלקוח מזמין, חשב את הסכום הכולל כולל הנחות אם רלוונטי
 4. אם הלקוח הזמין מוצר שיש עליו הנחה תציע לו את ההנחה
 5. היה ידידותי ומקצועי
-6. המחירים הם לקילוגרם אלא אם צוין אחרת`
+6. המחירים הם לקילוגרם אלא אם צוין אחרת
+7. לאחר שהלקוח מאשר את ההזמנה הסופית שלו, שאל אותו אם הוא מעדיף **משלוח** או **איסוף עצמי**:
+   - אם בחר **משלוח**: הסבר שעלות המשלוח היא ₪35 ושיש משלוח לכל אזור המרכז. בקש ממנו: כתובת מלאה לאספקה, תאריך מועדף, וטווח שעות שנוח לו לקבל את המשלוח.
+   - אם בחר **איסוף עצמי**: הצג לו את שעות הפתיחה ואת טווחי השעות האפשריים לאיסוף, ובקש ממנו לבחור אחד מהם:
+     שעות פתיחה: א׳-ה׳ 07:00-20:00 | שישי 07:00-14:00
+     טווחי איסוף מוצעים (ימים א׳-ה׳): 07:00-10:00 | 10:00-13:00 | 13:00-16:00 | 16:00-19:00
+     טווחי איסוף מוצעים (שישי): 07:00-10:00 | 10:00-13:00
+     בנוסף שאל באיזה יום הוא מתכנן להגיע.
+8. לאחר קבלת פרטי המשלוח/האיסוף, בקש מהלקוח **שם מלא** ו**מספר טלפון** ליצירת קשר לאישור ההזמנה.
+9. לאחר שקיבלת את כל הפרטים (שם, טלפון, פרטי משלוח/איסוף), שלח ללקוח אישור הזמנה סופי עם סיכום מלא.
+   בסוף הודעת האישור הזו בלבד, הוסף בשורה חדשה נפרדת את הסמן הבא בדיוק כך (אין לשנות את המבנה):
+   [[ORDER_COMPLETE:{"amount":TOTAL}]]
+   החלף את TOTAL במספר השקלים הכולל בלבד (כולל משלוח אם רלוונטי), ללא ₪ ללא פסיקים ללא רווחים פנימיים. לדוגמה אם הסכום הוא 535 שקל: [[ORDER_COMPLETE:{"amount":535}]]`
 }
 
 const client = new Anthropic()
@@ -131,7 +143,7 @@ async function handleWhatsAppMessage(chatId, messageText) {
       system: buildSystemPrompt(),
       messages: session.messages
     })
-    const msg = response.content[0].text
+    const msg = detectAndLogOrder(response.content[0].text)
     session.messages.push({ role: 'assistant', content: msg })
     return msg
   } catch { return 'מצטער, נתקלתי בבעיה. אנא נסה שוב.' }
@@ -148,6 +160,16 @@ app.get('/api/store-info', (req, res) => {
   })
 })
 
+function detectAndLogOrder(text) {
+  const match = text.match(/\[\[ORDER_COMPLETE:\{"amount":(\d+(?:\.\d+)?)\}\]\]/)
+  if (!match) return text
+  const amount = parseFloat(match[1])
+  const data = readJSON('analytics.json', { events: [] })
+  data.events.push({ type: 'order_closed', amount, timestamp: new Date().toISOString() })
+  writeJSON('analytics.json', data)
+  return text.replace(match[0], '').trim()
+}
+
 app.post('/api/chat', async (req, res) => {
   try {
     const { messages } = req.body
@@ -157,7 +179,8 @@ app.post('/api/chat', async (req, res) => {
       system: buildSystemPrompt(),
       messages,
     })
-    res.json({ content: response.content[0].text })
+    const content = detectAndLogOrder(response.content[0].text)
+    res.json({ content })
   } catch (error) {
     console.error('API Error:', error)
     res.status(500).json({ error: error.message })
