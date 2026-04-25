@@ -2,18 +2,16 @@
   "name": "butcher-pini",
   "version": "1.0.0",
   "private": true,
-  "description": "Butcher shop AI assistant",
-  "workspaces": [
-    "ui"
-  ],
   "scripts": {
-    "dev": "npm run dev --workspace=ui",
-    "build": "npm run build --workspace=ui",
-    "preview": "npm run preview --workspace=ui",
-    "install:all": "npm install",
-    "start": "npm run dev"
+    "start": "concurrently --names \"backend,frontend\" --prefix-colors \"cyan,magenta\" \"node backend/server.js\" \"npm run dev --prefix frontend\"",
+    "backend": "node backend/server.js",
+    "frontend": "npm run dev --prefix frontend",
+    "build": "npm run build --prefix frontend"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   }
 }

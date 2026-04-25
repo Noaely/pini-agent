@@ -1,0 +1,207 @@
+{
+  "events": [
+    { "type": "conversation_started", "phone": "972501234567", "timestamp": "2026-01-15T10:30:00Z" },
+    { "type": "conversation_started", "phone": "972501234568", "timestamp": "2026-01-22T14:15:00Z" },
+    { "type": "order_closed", "timestamp": "2026-01-22T14:45:00Z", "amount": 320, "phone": "972501234568", "customerName": "יוסי כהן", "categories": ["בקר טרי"] },
+    { "type": "conversation_started", "phone": "972501234569", "timestamp": "2026-02-03T09:00:00Z" },
+    { "type": "conversation_started", "phone": "972501234570", "timestamp": "2026-02-10T11:30:00Z" },
+    { "type": "order_closed", "timestamp": "2026-02-10T12:00:00Z", "amount": 540, "phone": "972501234570", "customerName": "מרים לוי", "categories": ["בקר טרי", "עוף"] },
+    { "type": "conversation_started", "phone": "972501234571", "timestamp": "2026-02-18T16:00:00Z" },
+    { "type": "order_closed", "timestamp": "2026-02-18T16:30:00Z", "amount": 200, "phone": "972501234571", "customerName": "דוד אברהם", "categories": ["עוף"] },
+    { "type": "conversation_started", "phone": "972501234572", "timestamp": "2026-03-05T10:00:00Z" },
+    { "type": "conversation_started", "phone": "972501234573", "timestamp": "2026-03-12T13:00:00Z" },
+    { "type": "conversation_started", "phone": "972501234574", "timestamp": "2026-03-20T15:00:00Z" },
+    { "type": "order_closed", "timestamp": "2026-03-20T15:30:00Z", "amount": 780, "phone": "972501234574", "customerName": "שרה מזרחי", "categories": ["בקר טרי", "כבש"] },
+
+    { "type": "conversation_started", "phone": "972521000018", "timestamp": "2026-03-24T09:15:00Z" },
+    { "type": "conversation_started", "phone": "972521000019", "timestamp": "2026-03-24T14:30:00Z" },
+
+    { "type": "conversation_started", "phone": "972521000001", "timestamp": "2026-03-25T10:00:00Z" },
+    { "type": "order_closed", "timestamp": "2026-03-25T10:35:00Z", "amount": 280, "phone": "972521000001", "customerName": "ברק כהן", "categories": ["בקר טרי"] },
+    { "type": "conversation_started", "phone": "972521000020", "timestamp": "2026-03-25T16:00:00Z" },
+
+    { "type": "conversation_started", "phone": "972521000021", "timestamp": "2026-03-26T11:00:00Z" },
+
+    { "type": "conversation_started", "phone": "972521000002", "timestamp": "2026-03-27T09:00:00Z" },
+    { "type": "order_closed", "timestamp": "2026-03-27T09:45:00Z", "amount": 450, "phone": "972521000002", "customerName": "שירה לוי", "categories": ["עוף", "נקניקיות"] },
+    { "type": "conversation_started", "phone": "972521000022", "timestamp": "2026-03-27T15:00:00Z" },
+
+    { "type": "conversation_started", "phone": "972521000023", "timestamp": "2026-03-28T12:00:00Z" },
+
+    { "type": "conversation_started", "phone": "972521000003", "timestamp": "2026-03-30T10:00:00Z" },
+    { "type": "order_closed", "timestamp": "2026-03-30T10:50:00Z", "amount": 620, "phone": "972521000003", "customerName": "אורן מזרחי", "categories": ["בקר טרי", "כבש"] },
+    { "type": "conversation_started", "phone": "972521000024", "timestamp": "2026-03-30T17:00:00Z" },
+
+    { "type": "conversation_started", "phone": "972521000025", "timestamp": "2026-03-31T09:00:00Z" },
+    { "type": "conversation_started", "phone": "972521000026", "timestamp": "2026-03-31T14:00:00Z" },
+
+    { "type": "conversation_started", "phone": "972521000004", "timestamp": "2026-04-01T10:00:00Z" },
+    { "type": "order_closed", "timestamp": "2026-04-01T10:40:00Z", "amount": 390, "phone": "972521000004", "customerName": "טל אברהם", "categories": ["עוף"] },
+    { "type": "conversation_started", "phone": "972521000027", "timestamp": "2026-04-01T15:30:00Z" },
+
+    { "type": "conversation_started", "phone": "972521000005", "timestamp": "2026-04-02T09:30:00Z" },
+    { "type": "order_closed", "timestamp": "2026-04-02T10:00:00Z", "amount": 180, "phone": "972521000005", "customerName": "נועה שמש", "categories": ["נקניקיות"] },
+
+    { "type": "conversation_started", "phone": "972521000028", "timestamp": "2026-04-03T11:00:00Z" },
+    { "type": "conversation_started", "phone": "972521000029", "timestamp": "2026-04-03T16:00:00Z" },
+
+    { "type": "conversation_started", "phone": "972521000006", "timestamp": "2026-04-04T09:00:00Z" },
+    { "type": "order_closed", "timestamp": "2026-04-04T09:50:00Z", "amount": 750, "phone": "972521000006", "customerName": "יונתן פרץ", "categories": ["אנטריקוט", "בקר טרי"] },
+    { "type": "conversation_started", "phone": "972521000030", "timestamp": "2026-04-04T13:00:00Z" },
+
+    { "type": "conversation_started", "phone": "972521000031", "timestamp": "2026-04-06T10:00:00Z" },
+    { "type": "conversation_started", "phone": "972521000032", "timestamp": "2026-04-06T15:00:00Z" },
+
+    { "type": "conversation_started", "phone": "972521000007", "timestamp": "2026-04-07T09:00:00Z" },
+    { "type": "order_closed", "timestamp": "2026-04-07T09:40:00Z", "amount": 320, "phone": "972521000007", "customerName": "מיכל כהן", "categories": ["עוף"] },
+    { "type": "conversation_started", "phone": "972521000033", "timestamp": "2026-04-07T14:00:00Z" },
+
+    { "type": "conversation_started", "phone": "972521000034", "timestamp": "2026-04-08T10:00:00Z" },
+    { "type": "conversation_started", "phone": "972521000035", "timestamp": "2026-04-08T16:00:00Z" },
+
+    { "type": "conversation_started", "phone": "972521000008", "timestamp": "2026-04-09T09:00:00Z" },
+    { "type": "order_closed", "timestamp": "2026-04-09T09:45:00Z", "amount": 540, "phone": "972521000008", "customerName": "ערן גולן", "categories": ["כבש", "בקר טרי"] },
+    { "type": "conversation_started", "phone": "972521000036", "timestamp": "2026-04-09T14:00:00Z" },
+
+    { "type": "conversation_started", "phone": "972521000009", "timestamp": "2026-04-10T10:00:00Z" },
+    { "type": "order_closed", "timestamp": "2026-04-10T10:35:00Z", "amount": 420, "phone": "972521000009", "customerName": "רונית לוין", "categories": ["בקר טרי"] },
+    { "type": "conversation_started", "phone": "972521000037", "timestamp": "2026-04-10T15:00:00Z" },
+
+    { "type": "conversation_started", "phone": "972521000038", "timestamp": "2026-04-11T09:00:00Z" },
+    { "type": "conversation_started", "phone": "972521000039", "timestamp": "2026-04-11T14:00:00Z" },
+
+    { "type": "conversation_started", "phone": "972521000010", "timestamp": "2026-04-13T10:00:00Z" },
+    { "type": "order_closed", "timestamp": "2026-04-13T10:45:00Z", "amount": 680, "phone": "972521000010", "customerName": "אמיר ביטון", "categories": ["אנטריקוט"] },
+    { "type": "conversation_started", "phone": "972521000040", "timestamp": "2026-04-13T15:00:00Z" },
+
+    { "type": "conversation_started", "phone": "972521000011", "timestamp": "2026-04-14T09:00:00Z" },
+    { "type": "order_closed", "timestamp": "2026-04-14T09:50:00Z", "amount": 350, "phone": "972521000011", "customerName": "גלית שפירו", "categories": ["עוף", "נקניקיות"] },
+    { "type": "conversation_started", "phone": "972521000041", "timestamp": "2026-04-14T14:00:00Z" },
+
+    { "type": "conversation_started", "phone": "972521000042", "timestamp": "2026-04-15T10:00:00Z" },
+    { "type": "conversation_started", "phone": "972521000043", "timestamp": "2026-04-15T15:00:00Z" },
+
+    { "type": "conversation_started", "phone": "972521000012", "timestamp": "2026-04-16T09:00:00Z" },
+    { "type": "order_closed", "timestamp": "2026-04-16T09:55:00Z", "amount": 890, "phone": "972521000012", "customerName": "יוסי הלוי", "categories": ["בקר טרי", "אנטריקוט"] },
+    { "type": "conversation_started", "phone": "972521000044", "timestamp": "2026-04-16T14:00:00Z" },
+
+    { "type": "conversation_started", "phone": "972521000013", "timestamp": "2026-04-17T10:00:00Z" },
+    { "type": "order_closed", "timestamp": "2026-04-17T10:40:00Z", "amount": 260, "phone": "972521000013", "customerName": "דינה כץ", "categories": ["כבש"] },
+    { "type": "conversation_started", "phone": "972521000045", "timestamp": "2026-04-17T15:00:00Z" },
+
+    { "type": "conversation_started", "phone": "972521000014", "timestamp": "2026-04-18T09:00:00Z" },
+    { "type": "order_closed", "timestamp": "2026-04-18T09:45:00Z", "amount": 480, "phone": "972521000014", "customerName": "עמיר נחום", "categories": ["עוף"] },
+    { "type": "conversation_started", "phone": "972521000046", "timestamp": "2026-04-18T14:00:00Z" },
+
+    { "type": "conversation_started", "phone": "972521000015", "timestamp": "2026-04-20T10:00:00Z" },
+    { "type": "order_closed", "timestamp": "2026-04-20T10:50:00Z", "amount": 730, "phone": "972521000015", "customerName": "שרה אלון", "categories": ["בקר טרי", "קבב"] },
+    { "type": "conversation_started", "phone": "972521000047", "timestamp": "2026-04-20T15:00:00Z" },
+
+    { "type": "conversation_started", "phone": "972521000016", "timestamp": "2026-04-21T09:00:00Z" },
+    { "type": "order_closed", "timestamp": "2026-04-21T09:40:00Z", "amount": 410, "phone": "972521000016", "customerName": "ניר ברוך", "categories": ["בקר טרי"] },
+    { "type": "conversation_started", "phone": "972521000048", "timestamp": "2026-04-21T14:00:00Z" },
+
+    { "type": "conversation_started", "phone": "972521000049", "timestamp": "2026-04-22T10:00:00Z" },
+    { "type": "conversation_started", "phone": "972521000050", "timestamp": "2026-04-22T15:00:00Z" },
+
+    { "type": "conversation_started", "phone": "972521000017", "timestamp": "2026-04-23T09:00:00Z" },
+    { "type": "order_closed", "timestamp": "2026-04-23T09:45:00Z", "amount": 590, "phone": "972521000017", "customerName": "אפרת מוסה", "categories": ["אנטריקוט", "כבש"] },
+    { "type": "conversation_started", "phone": "972521000051", "timestamp": "2026-04-23T14:00:00Z" },
+
+    { "type": "conversation_started", "phone": "972521000060", "timestamp": "2026-03-26T13:00:00Z" },
+    { "type": "order_abandoned", "timestamp": "2026-03-26T13:40:00Z", "phone": "972521000060" },
+
+    { "type": "conversation_started", "phone": "972521000061", "timestamp": "2026-03-29T10:00:00Z" },
+    { "type": "order_abandoned", "timestamp": "2026-03-29T10:50:00Z", "phone": "972521000061" },
+
+    { "type": "conversation_started", "phone": "972521000062", "timestamp": "2026-04-03T14:30:00Z" },
+    { "type": "order_abandoned", "timestamp": "2026-04-03T15:10:00Z", "phone": "972521000062" },
+
+    { "type": "conversation_started", "phone": "972521000063", "timestamp": "2026-04-08T12:00:00Z" },
+    { "type": "order_abandoned", "timestamp": "2026-04-08T12:45:00Z", "phone": "972521000063" },
+
+    { "type": "conversation_started", "phone": "972521000064", "timestamp": "2026-04-12T09:00:00Z" },
+    { "type": "order_abandoned", "timestamp": "2026-04-12T09:50:00Z", "phone": "972521000064" },
+
+    { "type": "conversation_started", "phone": "972521000065", "timestamp": "2026-04-15T13:00:00Z" },
+    { "type": "order_abandoned", "timestamp": "2026-04-15T13:40:00Z", "phone": "972521000065" },
+
+    { "type": "conversation_started", "phone": "972521000066", "timestamp": "2026-04-19T11:00:00Z" },
+    { "type": "order_abandoned", "timestamp": "2026-04-19T11:45:00Z", "phone": "972521000066" },
+
+    { "type": "conversation_started", "phone": "972521000067", "timestamp": "2026-04-22T10:30:00Z" },
+    { "type": "order_abandoned", "timestamp": "2026-04-22T11:10:00Z", "phone": "972521000067" }
+  ],
+  "customers": [
+    { "phone": "972501234568", "name": "יוסי כהן", "status": "order_completed", "lastActivity": "2026-01-22T14:45:00Z" },
+    { "phone": "972501234570", "name": "מרים לוי", "status": "order_completed", "lastActivity": "2026-02-10T12:00:00Z" },
+    { "phone": "972501234571", "name": "דוד אברהם", "status": "order_completed", "lastActivity": "2026-02-18T16:30:00Z" },
+    { "phone": "972501234574", "name": "שרה מזרחי", "status": "order_completed", "lastActivity": "2026-03-20T15:30:00Z" },
+    { "phone": "972521000001", "name": "ברק כהן", "status": "order_completed", "lastActivity": "2026-03-25T10:35:00Z" },
+    { "phone": "972521000002", "name": "שירה לוי", "status": "order_completed", "lastActivity": "2026-03-27T09:45:00Z" },
+    { "phone": "972521000003", "name": "אורן מזרחי", "status": "order_completed", "lastActivity": "2026-03-30T10:50:00Z" },
+    { "phone": "972521000004", "name": "טל אברהם", "status": "order_completed", "lastActivity": "2026-04-01T10:40:00Z" },
+    { "phone": "972521000005", "name": "נועה שמש", "status": "order_completed", "lastActivity": "2026-04-02T10:00:00Z" },
+    { "phone": "972521000006", "name": "יונתן פרץ", "status": "order_completed", "lastActivity": "2026-04-04T09:50:00Z" },
+    { "phone": "972521000007", "name": "מיכל כהן", "status": "order_completed", "lastActivity": "2026-04-07T09:40:00Z" },
+    { "phone": "972521000008", "name": "ערן גולן", "status": "order_completed", "lastActivity": "2026-04-09T09:45:00Z" },
+    { "phone": "972521000009", "name": "רונית לוין", "status": "order_completed", "lastActivity": "2026-04-10T10:35:00Z" },
+    { "phone": "972521000010", "name": "אמיר ביטון", "status": "order_completed", "lastActivity": "2026-04-13T10:45:00Z" },
+    { "phone": "972521000011", "name": "גלית שפירו", "status": "order_completed", "lastActivity": "2026-04-14T09:50:00Z" },
+    { "phone": "972521000012", "name": "יוסי הלוי", "status": "order_completed", "lastActivity": "2026-04-16T09:55:00Z" },
+    { "phone": "972521000013", "name": "דינה כץ", "status": "order_completed", "lastActivity": "2026-04-17T10:40:00Z" },
+    { "phone": "972521000014", "name": "עמיר נחום", "status": "order_completed", "lastActivity": "2026-04-18T09:45:00Z" },
+    { "phone": "972521000015", "name": "שרה אלון", "status": "order_completed", "lastActivity": "2026-04-20T10:50:00Z" },
+    { "phone": "972521000016", "name": "ניר ברוך", "status": "order_completed", "lastActivity": "2026-04-21T09:40:00Z" },
+    { "phone": "972521000017", "name": "אפרת מוסה", "status": "order_completed", "lastActivity": "2026-04-23T09:45:00Z" },
+
+    { "phone": "972521000031", "name": "לא זמין", "status": "waiting", "lastActivity": "2026-04-06T10:00:00Z" },
+    { "phone": "972521000032", "name": "לא זמין", "status": "waiting", "lastActivity": "2026-04-06T15:00:00Z" },
+    { "phone": "972521000033", "name": "לא זמין", "status": "waiting", "lastActivity": "2026-04-07T14:00:00Z" },
+    { "phone": "972521000034", "name": "לא זמין", "status": "waiting", "lastActivity": "2026-04-08T10:00:00Z" },
+    { "phone": "972521000035", "name": "לא זמין", "status": "waiting", "lastActivity": "2026-04-08T16:00:00Z" },
+    { "phone": "972521000036", "name": "לא זמין", "status": "waiting", "lastActivity": "2026-04-09T14:00:00Z" },
+    { "phone": "972521000037", "name": "לא זמין", "status": "waiting", "lastActivity": "2026-04-10T15:00:00Z" },
+    { "phone": "972521000038", "name": "לא זמין", "status": "waiting", "lastActivity": "2026-04-11T09:00:00Z" },
+    { "phone": "972521000039", "name": "לא זמין", "status": "waiting", "lastActivity": "2026-04-11T14:00:00Z" },
+    { "phone": "972521000040", "name": "לא זמין", "status": "waiting", "lastActivity": "2026-04-13T15:00:00Z" },
+    { "phone": "972521000041", "name": "לא זמין", "status": "waiting", "lastActivity": "2026-04-14T14:00:00Z" },
+    { "phone": "972521000042", "name": "לא זמין", "status": "waiting", "lastActivity": "2026-04-15T10:00:00Z" },
+    { "phone": "972521000043", "name": "לא זמין", "status": "waiting", "lastActivity": "2026-04-15T15:00:00Z" },
+    { "phone": "972521000044", "name": "לא זמין", "status": "waiting", "lastActivity": "2026-04-16T14:00:00Z" },
+    { "phone": "972521000045", "name": "לא זמין", "status": "waiting", "lastActivity": "2026-04-17T15:00:00Z" },
+    { "phone": "972521000046", "name": "לא זמין", "status": "waiting", "lastActivity": "2026-04-18T14:00:00Z" },
+    { "phone": "972521000047", "name": "לא זמין", "status": "waiting", "lastActivity": "2026-04-20T15:00:00Z" },
+    { "phone": "972521000048", "name": "לא זמין", "status": "waiting", "lastActivity": "2026-04-21T14:00:00Z" },
+    { "phone": "972521000049", "name": "לא זמין", "status": "waiting", "lastActivity": "2026-04-22T10:00:00Z" },
+    { "phone": "972521000050", "name": "לא זמין", "status": "waiting", "lastActivity": "2026-04-22T15:00:00Z" },
+    { "phone": "972521000051", "name": "לא זמין", "status": "waiting", "lastActivity": "2026-04-23T14:00:00Z" },
+
+    { "phone": "972501234567", "name": "לא זמין", "status": "no_response", "lastActivity": "2026-01-15T10:30:00Z" },
+    { "phone": "972501234569", "name": "לא זמין", "status": "no_response", "lastActivity": "2026-02-03T09:00:00Z" },
+    { "phone": "972501234572", "name": "לא זמין", "status": "no_response", "lastActivity": "2026-03-05T10:00:00Z" },
+    { "phone": "972501234573", "name": "לא זמין", "status": "no_response", "lastActivity": "2026-03-12T13:00:00Z" },
+    { "phone": "972521000018", "name": "לא זמין", "status": "no_response", "lastActivity": "2026-03-24T09:15:00Z" },
+    { "phone": "972521000019", "name": "לא זמין", "status": "no_response", "lastActivity": "2026-03-24T14:30:00Z" },
+    { "phone": "972521000020", "name": "לא זמין", "status": "no_response", "lastActivity": "2026-03-25T16:00:00Z" },
+    { "phone": "972521000021", "name": "לא זמין", "status": "no_response", "lastActivity": "2026-03-26T11:00:00Z" },
+    { "phone": "972521000022", "name": "לא זמין", "status": "no_response", "lastActivity": "2026-03-27T15:00:00Z" },
+    { "phone": "972521000023", "name": "לא זמין", "status": "no_response", "lastActivity": "2026-03-28T12:00:00Z" },
+    { "phone": "972521000024", "name": "לא זמין", "status": "no_response", "lastActivity": "2026-03-30T17:00:00Z" },
+    { "phone": "972521000025", "name": "לא זמין", "status": "no_response", "lastActivity": "2026-03-31T09:00:00Z" },
+    { "phone": "972521000026", "name": "לא זמין", "status": "no_response", "lastActivity": "2026-03-31T14:00:00Z" },
+    { "phone": "972521000027", "name": "לא זמין", "status": "no_response", "lastActivity": "2026-04-01T15:30:00Z" },
+    { "phone": "972521000028", "name": "לא זמין", "status": "no_response", "lastActivity": "2026-04-03T11:00:00Z" },
+    { "phone": "972521000029", "name": "לא זמין", "status": "no_response", "lastActivity": "2026-04-03T16:00:00Z" },
+    { "phone": "972521000030", "name": "לא זמין", "status": "no_response", "lastActivity": "2026-04-04T13:00:00Z" },
+
+    { "phone": "972521000060", "name": "לא זמין", "status": "abandoned", "lastActivity": "2026-03-26T13:40:00Z" },
+    { "phone": "972521000061", "name": "לא זמין", "status": "abandoned", "lastActivity": "2026-03-29T10:50:00Z" },
+    { "phone": "972521000062", "name": "לא זמין", "status": "abandoned", "lastActivity": "2026-04-03T15:10:00Z" },
+    { "phone": "972521000063", "name": "לא זמין", "status": "abandoned", "lastActivity": "2026-04-08T12:45:00Z" },
+    { "phone": "972521000064", "name": "לא זמין", "status": "abandoned", "lastActivity": "2026-04-12T09:50:00Z" },
+    { "phone": "972521000065", "name": "לא זמין", "status": "abandoned", "lastActivity": "2026-04-15T13:40:00Z" },
+    { "phone": "972521000066", "name": "לא זמין", "status": "abandoned", "lastActivity": "2026-04-19T11:45:00Z" },
+    { "phone": "972521000067", "name": "לא זמין", "status": "abandoned", "lastActivity": "2026-04-22T11:10:00Z" }
+  ]
+}
