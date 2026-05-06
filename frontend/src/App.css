@@ -2,32 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap');
 
 :root {
-  --color-primary:      #7C5CBF;
-  --color-primary-light:#9B7EE8;
-  --color-primary-dark: #6448A8;
-  --color-primary-bg:   rgba(124, 92, 191, 0.15);
-  --color-accent:       #00D4D4;
+  --color-primary:      #1d4ed8;
+  --color-primary-light:#3b82f6;
+  --color-primary-dark: #1e3a8a;
+  --color-primary-bg:   rgba(29, 78, 216, 0.08);
+  --color-accent:       #3b82f6;
 
-  --color-background:   #0D0C1E;
-  --color-surface:      #1A1835;
-  --color-surface-2:    #252246;
+  --color-background:   #dbeafe;
+  --color-surface:      #e8f3ff;
+  --color-surface-2:    #d6ebff;
 
-  --color-border:       #2D2B52;
+  --color-border:       #e2e7ee;
 
-  --color-text-primary:   #FFFFFF;
-  --color-text-secondary: #9B9BBB;
-  --color-text-disabled:  #4A4870;
+  --color-text-primary:   #0d1b2e;
+  --color-text-secondary: #5a6678;
+  --color-text-disabled:  #9eb3d4;
 
-  --color-success:    #22C55E;
-  --color-success-bg: rgba(34, 197, 94, 0.12);
+  --color-success:    #16a34a;
+  --color-success-bg: rgba(22, 163, 74, 0.1);
   --color-danger:     #EF4444;
-  --color-danger-bg:  rgba(239, 68, 68, 0.12);
+  --color-danger-bg:  rgba(239, 68, 68, 0.08);
   --color-warning:    #F59E0B;
 
-  --font-primary: 'Assistant', system-ui, sans-serif;
+  --font-primary: 'Heebo', system-ui, sans-serif;
 
   --text-h1: 26px;
   --text-h2: 20px;
@@ -54,9 +54,9 @@
   --radius-xl:   20px;
   --radius-full: 9999px;
 
-  --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
-  --shadow-md: 0 4px 20px rgba(0,0,0,0.4);
-  --shadow-lg: 0 8px 40px rgba(0,0,0,0.55);
+  --shadow-sm: 0 2px 8px rgba(13,27,46,0.08);
+  --shadow-md: 0 4px 20px rgba(13,27,46,0.12);
+  --shadow-lg: 0 8px 40px rgba(13,27,46,0.2);
 
   --sidebar-width: 230px;
 }
@@ -125,12 +125,12 @@ input, textarea, select { font-family: inherit; font-size: inherit; direction: r
 .header-nav-btn.active {
   background: var(--color-primary);
   color: #fff;
-  box-shadow: 0 2px 12px rgba(124,92,191,0.45);
+  box-shadow: 0 2px 12px rgba(29,78,216,0.35);
 }
 
 .header-nav-btn:hover:not(.active) {
   color: var(--color-text-primary);
-  background: rgba(255,255,255,0.07);
+  background: rgba(29,78,216,0.07);
 }
 
 .header-user { display: flex; align-items: center; gap: var(--space-sm); }
@@ -141,7 +141,7 @@ input, textarea, select { font-family: inherit; font-size: inherit; direction: r
   width: 36px;
   height: 36px;
   border-radius: var(--radius-full);
-  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary-light));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -282,7 +282,7 @@ input, textarea, select { font-family: inherit; font-size: inherit; direction: r
 /* ─── SIDEBAR ───────────────────────────────────────────────────────── */
 .sidebar {
   width: var(--sidebar-width);
-  background: #13122C;
+  background: #eff4fb;
   border-left: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
@@ -296,7 +296,7 @@ input, textarea, select { font-family: inherit; font-size: inherit; direction: r
 .sidebar-section-title {
   font-size: 10px;
   font-weight: var(--weight-semibold);
-  color: rgba(255,255,255,0.28);
+  color: rgba(13,27,46,0.4);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin-bottom: var(--space-sm);
@@ -311,7 +311,7 @@ input, textarea, select { font-family: inherit; font-size: inherit; direction: r
   border-radius: var(--radius-md);
   font-size: var(--text-body-small);
   font-weight: var(--weight-medium);
-  color: rgba(255,255,255,0.42);
+  color: rgba(13,27,46,0.55);
   cursor: pointer;
   transition: all 0.15s ease;
   margin: 2px var(--space-sm);
@@ -326,7 +326,7 @@ input, textarea, select { font-family: inherit; font-size: inherit; direction: r
   background: var(--color-primary);
   color: white;
   font-weight: var(--weight-semibold);
-  box-shadow: 0 4px 16px rgba(124,92,191,0.4);
+  box-shadow: 0 4px 16px rgba(29,78,216,0.3);
 }
 
 .sidebar-item-icon { font-size: 16px; flex-shrink: 0; line-height: 1; }
@@ -344,6 +344,11 @@ input, textarea, select { font-family: inherit; font-size: inherit; direction: r
   padding: var(--space-lg);
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+}
+
+.admin-content.landing-mode {
+  padding: 0;
   overflow: hidden;
 }
 
@@ -453,8 +458,8 @@ input, textarea, select { font-family: inherit; font-size: inherit; direction: r
   white-space: nowrap;
 }
 
-.btn-primary { background: var(--color-primary); color: white; box-shadow: 0 2px 10px rgba(124,92,191,0.35); }
-.btn-primary:hover:not(:disabled) { background: var(--color-primary-dark); box-shadow: 0 4px 16px rgba(124,92,191,0.5); transform: translateY(-1px); }
+.btn-primary { background: var(--color-primary); color: white; box-shadow: 0 2px 10px rgba(29,78,216,0.25); }
+.btn-primary:hover:not(:disabled) { background: var(--color-primary-dark); box-shadow: 0 4px 16px rgba(29,78,216,0.4); transform: translateY(-1px); }
 
 .btn-secondary { background: var(--color-surface-2); color: var(--color-text-primary); border: 1px solid var(--color-border); }
 .btn-secondary:hover:not(:disabled) { background: var(--color-primary-bg); color: var(--color-primary-light); border-color: var(--color-primary); }
@@ -495,7 +500,7 @@ input, textarea, select { font-family: inherit; font-size: inherit; direction: r
 }
 
 .data-table tr:last-child td { border-bottom: none; }
-.data-table tr:hover td      { background: rgba(255,255,255,0.025); }
+.data-table tr:hover td      { background: rgba(29,78,216,0.04); }
 
 /* ─── BADGE ─────────────────────────────────────────────────────────── */
 .badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: var(--radius-full); font-size: var(--text-caption); font-weight: var(--weight-semibold); }
@@ -503,7 +508,7 @@ input, textarea, select { font-family: inherit; font-size: inherit; direction: r
 .badge-primary { background: var(--color-primary-bg);   color: var(--color-primary-light); }
 .badge-success { background: var(--color-success-bg);   color: var(--color-success); }
 .badge-danger  { background: var(--color-danger-bg);    color: var(--color-danger); }
-.badge-gray    { background: rgba(255,255,255,0.06);    color: var(--color-text-secondary); border: 1px solid var(--color-border); }
+.badge-gray    { background: rgba(13,27,46,0.06);    color: var(--color-text-secondary); border: 1px solid var(--color-border); }
 
 /* ─── FORMS ─────────────────────────────────────────────────────────── */
 .form-group  { display: flex; flex-direction: column; gap: var(--space-xs); margin-bottom: var(--space-md); }
@@ -534,7 +539,7 @@ input, textarea, select { font-family: inherit; font-size: inherit; direction: r
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.7);
+  background: rgba(13,27,46,0.45);
   backdrop-filter: blur(4px);
   z-index: 1000;
   display: flex;
@@ -625,7 +630,7 @@ input, textarea, select { font-family: inherit; font-size: inherit; direction: r
 
 .tabs { display: flex; gap: 2px; background: var(--color-surface-2); padding: 4px; border-radius: var(--radius-md); border: 1px solid var(--color-border); margin-bottom: var(--space-lg); }
 .tab  { flex: 1; padding: 8px var(--space-md); border-radius: var(--radius-sm); font-size: var(--text-body-small); font-weight: var(--weight-semibold); color: var(--color-text-secondary); text-align: center; cursor: pointer; transition: all 0.18s ease; border: none; background: none; }
-.tab.active { background: var(--color-primary); color: white; box-shadow: 0 2px 10px rgba(124,92,191,0.35); }
+.tab.active { background: var(--color-primary); color: white; box-shadow: 0 2px 10px rgba(29,78,216,0.25); }
 
 .sync-status-dot { width: 10px; height: 10px; border-radius: var(--radius-full); display: inline-block; }
 .sync-status-dot.idle    { background: var(--color-success); }
@@ -642,8 +647,8 @@ input, textarea, select { font-family: inherit; font-size: inherit; direction: r
 
 .spinner {
   width: 18px; height: 18px;
-  border: 2px solid rgba(255,255,255,0.15);
-  border-top-color: white;
+  border: 2px solid rgba(29,78,216,0.15);
+  border-top-color: var(--color-primary);
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
   display: inline-block;

@@ -29,17 +29,17 @@ function formatDate(iso) {
 function DeliveryBadge({ type }) {
   if (type === 'delivery')
     return (
-      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs bg-[#06B6D4]/10 text-[#06B6D4]">
-        <span className="w-2 h-2 rounded-full bg-[#06B6D4]" />נשלחה
+      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs bg-[#3b82f6]/10 text-[#1d4ed8]">
+        <span className="w-2 h-2 rounded-full bg-[#3b82f6]" />נשלחה
       </span>
     )
   if (type === 'pickup')
     return (
-      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs bg-[#22C55E]/10 text-[#22C55E]">
-        <span className="w-2 h-2 rounded-full bg-[#22C55E]" />נאספה
+      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs bg-[#16a34a]/10 text-[#16a34a]">
+        <span className="w-2 h-2 rounded-full bg-[#16a34a]" />נאספה
       </span>
     )
-  return <span className="text-[#9B9BBB] text-sm">—</span>
+  return <span className="text-[#5a6678] text-sm">—</span>
 }
 
 export default function OrderHistory() {
@@ -68,12 +68,12 @@ export default function OrderHistory() {
         <p className="admin-page-subtitle">כל ההזמנות שנסגרו דרך הצ׳אט</p>
       </div>
 
-      <div className="bg-[#1A1835] border border-[#2D2B52] rounded-2xl p-6 shadow-[0_4px_24px_rgba(124,92,191,0.12)]">
+      <div className="bg-[#e8f3ff] border border-[#e2e7ee] rounded-2xl p-6 shadow-[0_4px_24px_rgba(29,78,216,0.08)]">
         {/* Header */}
         <div className="flex items-center gap-2 mb-4">
           <img src={iconHistory} alt="" className="w-8 h-8 object-contain" />
-          <h3 className="text-white text-lg font-semibold">כל ההזמנות</h3>
-          <span className="mr-auto text-[#9B9BBB] text-sm">{filtered.length} מתוך {orders.length}</span>
+          <h3 className="text-[#0d1b2e] text-lg font-semibold">כל ההזמנות</h3>
+          <span className="mr-auto text-[#5a6678] text-sm">{filtered.length} מתוך {orders.length}</span>
         </div>
 
         {/* Filter chips */}
@@ -84,8 +84,8 @@ export default function OrderHistory() {
               onClick={() => setActiveFilter(key)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                 activeFilter === key
-                  ? 'bg-[#7C5CBF] text-white'
-                  : 'bg-[#252246] text-[#9B9BBB] hover:bg-[#2D2B52] hover:text-white'
+                  ? 'bg-[#1d4ed8] text-white'
+                  : 'bg-[#d6ebff] text-[#5a6678] hover:bg-[#bfdbfe] hover:text-[#0d1b2e]'
               }`}
             >
               {key}
@@ -100,27 +100,27 @@ export default function OrderHistory() {
             <div className="overflow-x-auto">
               <table className="w-full text-right">
                 <thead>
-                  <tr className="border-b border-[#2D2B52]">
-                    <th className="pb-3 text-[#9B9BBB] font-medium text-sm">שם לקוח</th>
-                    <th className="pb-3 text-[#9B9BBB] font-medium text-sm">טלפון</th>
-                    <th className="pb-3 text-[#9B9BBB] font-medium text-sm">תאריך הזמנה</th>
-                    <th className="pb-3 text-[#9B9BBB] font-medium text-sm">אופן קבלה</th>
-                    <th className="pb-3 text-[#9B9BBB] font-medium text-sm">סכום</th>
+                  <tr className="border-b border-[#e2e7ee]">
+                    <th className="pb-3 text-[#5a6678] font-medium text-sm">שם לקוח</th>
+                    <th className="pb-3 text-[#5a6678] font-medium text-sm">טלפון</th>
+                    <th className="pb-3 text-[#5a6678] font-medium text-sm">תאריך הזמנה</th>
+                    <th className="pb-3 text-[#5a6678] font-medium text-sm">אופן קבלה</th>
+                    <th className="pb-3 text-[#5a6678] font-medium text-sm">סכום</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filtered.map((order, idx) => (
-                    <tr key={idx} className="border-b border-[#2D2B52] hover:bg-[#252246] transition-all">
-                      <td className="py-3 text-white">{order.name}</td>
-                      <td className="py-3 text-[#9B9BBB]">{order.phone || '—'}</td>
-                      <td className="py-3 text-[#9B9BBB] text-sm">{formatDate(order.date)}</td>
+                    <tr key={idx} className="border-b border-[#e2e7ee] hover:bg-[#d6ebff] transition-all">
+                      <td className="py-3 text-[#0d1b2e]">{order.name}</td>
+                      <td className="py-3 text-[#5a6678]">{order.phone || '—'}</td>
+                      <td className="py-3 text-[#5a6678] text-sm">{formatDate(order.date)}</td>
                       <td className="py-3"><DeliveryBadge type={order.deliveryType} /></td>
-                      <td className="py-3 text-white font-medium">₪{order.amount.toLocaleString('he-IL')}</td>
+                      <td className="py-3 text-[#0d1b2e] font-medium">₪{order.amount.toLocaleString('he-IL')}</td>
                     </tr>
                   ))}
                   {filtered.length === 0 && (
                     <tr>
-                      <td colSpan={5} className="py-8 text-center text-[#9B9BBB]">אין הזמנות בסינון זה</td>
+                      <td colSpan={5} className="py-8 text-center text-[#5a6678]">אין הזמנות בסינון זה</td>
                     </tr>
                   )}
                 </tbody>
@@ -128,20 +128,20 @@ export default function OrderHistory() {
             </div>
 
             {filtered.length > 0 && (
-              <div className="mt-6 pt-5 border-t border-[#2D2B52] flex justify-between items-end">
+              <div className="mt-6 pt-5 border-t border-[#e2e7ee] flex justify-between items-end">
                 <div className="flex gap-10">
                   <div>
-                    <p className="text-[#9B9BBB] text-sm mb-1">לקוחות שביצעו הזמנה</p>
-                    <p className="text-white text-2xl font-bold">{uniqueCustomers}</p>
+                    <p className="text-[#5a6678] text-sm mb-1">לקוחות שביצעו הזמנה</p>
+                    <p className="text-[#0d1b2e] text-2xl font-bold">{uniqueCustomers}</p>
                   </div>
                   <div>
-                    <p className="text-[#9B9BBB] text-sm mb-1">סה״כ הזמנות</p>
-                    <p className="text-white text-2xl font-bold">{filtered.length}</p>
+                    <p className="text-[#5a6678] text-sm mb-1">סה״כ הזמנות</p>
+                    <p className="text-[#0d1b2e] text-2xl font-bold">{filtered.length}</p>
                   </div>
                 </div>
                 <div className="text-left">
-                  <p className="text-[#9B9BBB] text-sm mb-1">סה״כ הכנסות</p>
-                  <p className="text-[#22C55E] text-3xl font-bold">₪{totalRevenue.toLocaleString('he-IL')}</p>
+                  <p className="text-[#5a6678] text-sm mb-1">סה״כ הכנסות</p>
+                  <p className="text-[#16a34a] text-3xl font-bold">₪{totalRevenue.toLocaleString('he-IL')}</p>
                 </div>
               </div>
             )}

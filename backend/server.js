@@ -9,7 +9,9 @@ import dotenv from 'dotenv'
 import fetch from 'node-fetch'
 import { randomUUID } from 'crypto'
 
-dotenv.config({ path: join(dirname(fileURLToPath(import.meta.url)), '.env') })
+const envPath = join(dirname(fileURLToPath(import.meta.url)), '.env')
+console.log('Loading .env from:', envPath)
+dotenv.config({ path: envPath, override: true })
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -105,7 +107,8 @@ ${customProductsSection}${answersSummary}
    החלף את TOTAL במספר השקלים הכולל בלבד (כולל משלוח אם רלוונטי), ללא ₪ ללא פסיקים ללא רווחים פנימיים. לדוגמה אם הסכום הוא 535 שקל: [[ORDER_COMPLETE:{"amount":535}]]`
 }
 
-const client = new Anthropic()
+console.log('ANTHROPIC_API_KEY starts with:', process.env.ANTHROPIC_API_KEY?.substring(0, 25) || 'NOT SET')
+const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
 // WhatsApp sessions
 const whatsappSessions = new Map()
@@ -117,18 +120,15 @@ setInterval(() => {
 }, 60 * 60 * 1000)
 
 async function sendWhatsAppMessage(chatId, text) {
-  const instanceId = process.env.GREEN_API_INSTANCE_ID
-  const token = process.env.GREEN_API_TOKEN
-  if (!instanceId || !token) return false
+  if (!process.env.GREEN_API_INSTANCE_ID || !process.env.GREEN_API_TOKEN) return false
   try {
-    const url = `https://api.green-api.com/waInstance${instanceId}/sendMessage/${token}`
-    await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chatId, message: text })
-    })
+    const result = await greenAPI('sendMessage', { chatId, message: text })
+    console.log('[WA send]', chatId, JSON.stringify(result))
     return true
-  } catch { return false }
+  } catch (e) {
+    console.error('[WA send error]', chatId, e.message)
+    return false
+  }
 }
 
 async function handleWhatsAppMessage(chatId, messageText) {
@@ -145,7 +145,7 @@ async function handleWhatsAppMessage(chatId, messageText) {
   session.lastActivity = Date.now()
   try {
     const response = await client.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-sonnet-4-6',
       max_tokens: 2048,
       system: buildSystemPrompt(),
       messages: session.messages
@@ -155,6 +155,40 @@ async function handleWhatsAppMessage(chatId, messageText) {
     return msg
   } catch { return 'מצטער, נתקלתי בבעיה. אנא נסה שוב.' }
 }
+
+// ─── LEAD FORM ──────────────────────────────────────────────────
+
+app.post('/api/lead', async (req, res) => {
+  const { name, phone } = req.body || {}
+  if (!name || !phone) return res.status(400).json({ error: 'חסרים פרטים' })
+
+  // Normalize Israeli phone → WhatsApp chatId
+  const digits = phone.replace(/\D/g, '')
+  let normalized = digits
+  if (digits.startsWith('0')) normalized = '972' + digits.slice(1)
+  else if (digits.startsWith('972')) normalized = digits
+  const chatId = normalized + '@c.us'
+
+  const greeting =
+    `היי ${name}! 👋\n` +
+    `קיבלתי את הפנייה שלך ואני כאן לעזור.\n` +
+    `אני הסוכן הדיגיטלי — אשמח לענות על כל שאלה לגבי המחירים, השירותים, או לקבוע לך תור 😊\n` +
+    `במה אוכל לעזור?`
+
+  const sent = await sendWhatsAppMessage(chatId, greeting)
+
+  if (sent) {
+    // Open a session so follow-up replies from the lead go through the agent
+    if (!whatsappSessions.has(chatId)) {
+      whatsappSessions.set(chatId, { messages: [], lastActivity: Date.now(), phone: chatId })
+    }
+    const data = readJSON('analytics.json', { events: [], customers: [] })
+    data.events.push({ type: 'conversation_started', phone: chatId, timestamp: new Date().toISOString() })
+    writeJSON('analytics.json', data)
+  }
+
+  res.json({ ok: true, sent })
+})
 
 // ─── EXISTING ENDPOINTS ─────────────────────────────────────────
 
@@ -224,7 +258,7 @@ app.post('/api/chat', async (req, res) => {
   try {
     const { messages } = req.body
     const response = await client.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-sonnet-4-6',
       max_tokens: 2048,
       system: buildSystemPrompt(),
       messages,
@@ -233,6 +267,55 @@ app.post('/api/chat', async (req, res) => {
     res.json({ content })
   } catch (error) {
     console.error('API Error:', error)
+    res.status(500).json({ error: error.message })
+  }
+})
+
+const LANDING_SYS = `אתה נציג מכירות של pini – מערכת AI לעסקים קטנים בישראל.
+תפקידך: לענות על שאלות על pini ולקבוע פגישות היכרות עם בעלי עסקים מתעניינים.
+
+על pini:
+- צ'אטבוט AI שעונה ללקוחות בוואטסאפ 24/7
+- מסוגל לתאם תורים, לעבד הזמנות, לתמחר ולסגור עסקאות
+- מותאם אישית לכל עסק (קצביה, מספרה, קונדיטוריה וכו')
+- הקמה של 30 דקות, ללא ידע טכני
+- מחיר: מ-199₪ לחודש
+
+כשמישהו מביע עניין לקבוע פגישה, אסוף ממנו בזה אחר זה (שאלה אחת בכל פעם):
+1. שם מלא
+2. מספר טלפון
+3. סוג העסק
+
+כשיש לך את כל 3 הפרטים, אשר שנציג יחזור אליו תוך 24 שעות, ובסוף ההודעה הוסף בשורה נפרדת:
+[[LEAD:{"name":"...","phone":"...","business":"..."}]]
+
+חשוב: המשך לענות בעברית, קצר ובחום. אל תמציא מידע שאינך בטוח בו.`
+
+app.post('/api/landing/chat', async (req, res) => {
+  try {
+    const { messages } = req.body
+    const response = await client.messages.create({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 1024,
+      system: LANDING_SYS,
+      messages,
+    })
+    let text = response.content[0].text
+    const leadMatch = text.match(/\[\[LEAD:(\{[^}]+\})\]\]/)
+    if (leadMatch) {
+      try {
+        const lead = JSON.parse(leadMatch[1])
+        const leadPhone = process.env.LEAD_PHONE
+        if (leadPhone) {
+          const msg = `🔔 ליד חדש מדף הנחיתה!\n👤 שם: ${lead.name}\n📱 טלפון: ${lead.phone}\n🏪 עסק: ${lead.business}`
+          await sendWhatsAppMessage(`${leadPhone}@c.us`, msg)
+        }
+      } catch (e) { console.error('[landing lead]', e.message) }
+      text = text.replace(leadMatch[0], '').trim()
+    }
+    res.json({ response: text })
+  } catch (error) {
+    console.error('Landing chat error:', error)
     res.status(500).json({ error: error.message })
   }
 })
@@ -612,6 +695,28 @@ app.post('/api/admin/whatsapp/reboot', async (req, res) => {
     console.error('[WhatsApp] reboot error:', e.message)
     res.status(500).json({ error: e.message })
   }
+})
+
+// ─── LANDING LEAD ────────────────────────────────────────────────
+
+app.post('/api/landing/lead', async (req, res) => {
+  const { name, phone, businessType } = req.body
+  console.log('[Lead] received:', { name, phone, businessType })
+  if (!name || !phone) return res.status(400).json({ error: 'חסרים פרטים' })
+
+  const leadPhone = process.env.LEAD_PHONE
+  console.log('[Lead] LEAD_PHONE:', leadPhone)
+  if (!leadPhone) {
+    console.warn('[Lead] LEAD_PHONE not set in .env')
+    return res.json({ ok: true })
+  }
+
+  const chatId = `${leadPhone}@c.us`
+  console.log('[Lead] sending WA to chatId:', chatId)
+  const msg = `🔔 ליד חדש מדף הנחיתה!\n\nשם: ${name}\nטלפון: ${phone}\nסוג עסק: ${businessType || 'לא צוין'}\n\nהלקוח מבקש שתחזרו אליו.`
+  const ok = await sendWhatsAppMessage(chatId, msg)
+  console.log('[Lead] WA send result:', ok)
+  res.json({ ok: true })
 })
 
 // ─── START ───────────────────────────────────────────────────────

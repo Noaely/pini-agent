@@ -29,11 +29,11 @@ export default {
         full: 'var(--radius-full)',
       },
       fontFamily: {
-        sans: ['Assistant', 'system-ui', 'sans-serif'],
+        sans: ['Heebo', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
-        card: '0 2px 12px rgba(108, 92, 231, 0.08)',
-        btn:  '0 2px 8px rgba(108, 92, 231, 0.3)',
+        card: '0 2px 12px rgba(29, 78, 216, 0.08)',
+        btn:  '0 2px 8px rgba(29, 78, 216, 0.25)',
       },
     },
   },

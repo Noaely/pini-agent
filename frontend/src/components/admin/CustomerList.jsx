@@ -17,9 +17,9 @@ const DEMO_CUSTOMERS = [
 const STATUS_FILTERS = ['הכל', 'הזמנה נסגרה', 'מחכה לתשובה', 'הזמנה ננטשה', 'אין מענה']
 
 const STATUS_STYLE = {
-  'הזמנה נסגרה':  { bg: 'bg-[#22C55E]/10', text: 'text-[#22C55E]', dot: '#22C55E' },
-  'מחכה לתשובה': { bg: 'bg-[#F59E0B]/10', text: 'text-[#F59E0B]', dot: '#F59E0B' },
-  'הזמנה ננטשה':  { bg: 'bg-[#7C5CBF]/10', text: 'text-[#9B7EE8]', dot: '#9B7EE8' },
+  'הזמנה נסגרה':  { bg: 'bg-[#16a34a]/10', text: 'text-[#16a34a]', dot: '#16a34a' },
+  'מחכה לתשובה': { bg: 'bg-[#F59E0B]/10', text: 'text-[#b45309]', dot: '#F59E0B' },
+  'הזמנה ננטשה':  { bg: 'bg-[#1d4ed8]/10', text: 'text-[#1d4ed8]', dot: '#1d4ed8' },
   'אין מענה':     { bg: 'bg-[#EF4444]/10', text: 'text-[#EF4444]', dot: '#EF4444' },
 }
 
@@ -55,12 +55,12 @@ export default function CustomerList() {
         <p className="admin-page-subtitle">כל הלקוחות שיצרו קשר דרך הצ׳אט</p>
       </div>
 
-      <div className="bg-[#1A1835] border border-[#2D2B52] rounded-2xl p-6 shadow-[0_4px_24px_rgba(124,92,191,0.12)]">
+      <div className="bg-[#e8f3ff] border border-[#e2e7ee] rounded-2xl p-6 shadow-[0_4px_24px_rgba(29,78,216,0.08)]">
         {/* Header */}
         <div className="flex items-center gap-2 mb-4">
           <img src={iconCustomers} alt="" className="w-8 h-8 object-contain" />
-          <h3 className="text-white text-lg font-semibold">כל הלקוחות</h3>
-          <span className="mr-auto text-[#9B9BBB] text-sm">{filtered.length} מתוך {customers.length}</span>
+          <h3 className="text-[#0d1b2e] text-lg font-semibold">כל הלקוחות</h3>
+          <span className="mr-auto text-[#5a6678] text-sm">{filtered.length} מתוך {customers.length}</span>
         </div>
 
         {/* Filter chips */}
@@ -71,8 +71,8 @@ export default function CustomerList() {
               onClick={() => setActiveFilter(f)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                 activeFilter === f
-                  ? 'bg-[#7C5CBF] text-white'
-                  : 'bg-[#252246] text-[#9B9BBB] hover:bg-[#2D2B52] hover:text-white'
+                  ? 'bg-[#1d4ed8] text-white'
+                  : 'bg-[#d6ebff] text-[#5a6678] hover:bg-[#bfdbfe] hover:text-[#0d1b2e]'
               }`}
             >
               {f}
@@ -86,21 +86,21 @@ export default function CustomerList() {
           <div className="overflow-x-auto">
             <table className="w-full text-right">
               <thead>
-                <tr className="border-b border-[#2D2B52]">
-                  <th className="pb-3 text-[#9B9BBB] font-medium text-sm">שם</th>
-                  <th className="pb-3 text-[#9B9BBB] font-medium text-sm">מספר טלפון</th>
-                  <th className="pb-3 text-[#9B9BBB] font-medium text-sm">פעילות אחרונה</th>
-                  <th className="pb-3 text-[#9B9BBB] font-medium text-sm">סטטוס</th>
+                <tr className="border-b border-[#e2e7ee]">
+                  <th className="pb-3 text-[#5a6678] font-medium text-sm">שם</th>
+                  <th className="pb-3 text-[#5a6678] font-medium text-sm">מספר טלפון</th>
+                  <th className="pb-3 text-[#5a6678] font-medium text-sm">פעילות אחרונה</th>
+                  <th className="pb-3 text-[#5a6678] font-medium text-sm">סטטוס</th>
                 </tr>
               </thead>
               <tbody>
                 {filtered.map((c, idx) => {
                   const s = STATUS_STYLE[c.status] ?? STATUS_STYLE['אין מענה']
                   return (
-                    <tr key={idx} className="border-b border-[#2D2B52] hover:bg-[#252246] transition-all">
-                      <td className="py-3 text-white">{c.name}</td>
-                      <td className="py-3 text-[#9B9BBB]">{c.phone}</td>
-                      <td className="py-3 text-[#9B9BBB] text-sm">{formatDate(c.lastActivity)}</td>
+                    <tr key={idx} className="border-b border-[#e2e7ee] hover:bg-[#d6ebff] transition-all">
+                      <td className="py-3 text-[#0d1b2e]">{c.name}</td>
+                      <td className="py-3 text-[#5a6678]">{c.phone}</td>
+                      <td className="py-3 text-[#5a6678] text-sm">{formatDate(c.lastActivity)}</td>
                       <td className="py-3">
                         <span className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs ${s.bg} ${s.text}`}>
                           <span className="w-2 h-2 rounded-full" style={{ background: s.dot }} />
@@ -112,7 +112,7 @@ export default function CustomerList() {
                 })}
                 {filtered.length === 0 && (
                   <tr>
-                    <td colSpan={4} className="py-8 text-center text-[#9B9BBB]">אין לקוחות בסטטוס זה</td>
+                    <td colSpan={4} className="py-8 text-center text-[#5a6678]">אין לקוחות בסטטוס זה</td>
                   </tr>
                 )}
               </tbody>

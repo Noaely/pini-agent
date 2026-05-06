@@ -27,27 +27,36 @@ const MENU = [
   {
     section: 'מערכת',
     items: [
+      { id: 'landing',   icon: null, label: 'דף נחיתה' },
       { id: 'settings',  icon: null, label: 'הגדרות' },
     ]
   },
 ]
 
 export default function Sidebar({ activePage, onNavigate }) {
+  function handleClick(id) {
+    if (id === 'landing') {
+      window.open('/landing.html', '_blank')
+      return
+    }
+    onNavigate(id)
+  }
+
   return (
     <aside className="sidebar">
       {MENU.map(({ section, items }) => (
         <div key={section} className="sidebar-section">
-      
+
           {items.map(({ id, icon, label }) => (
             <button
               key={id}
               className={`sidebar-item hover:scale-110 rounded-full${activePage === id ? ' active' : ''}`}
-              onClick={() => onNavigate(id)}
+              onClick={() => handleClick(id)}
             >
               <span className="sidebar-item-icon">
                 {icon
                   ? <img src={icon} alt="" className="w-8 h-8 object-contain" />
-                  : '⚙️'
+                  : id === 'landing' ? '🌐' : '⚙️'
                 }
               </span>
               {label}

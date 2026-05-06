@@ -1,0 +1,1614 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>pini – הצ'אטבוט שעובד בשבילך</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Inter:wght@800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #dbeafe;
+  --bg-deep: #bfdbfe;
+  --paper: #e8f3ff;
+  --paper-soft: #d6ebff;
+  --ink: #0d1b2e;
+  --ink-soft: #5a6678;
+  --line: #e2e7ee;
+  --blue: #1d4ed8;
+  --blue-deep: #1e3a8a;
+  --blue-mid: #3b82f6;
+  --blue-soft: #dbeafe;
+  --blue-pale: #eff4fb;
+  --green: #16a34a;
+  --grad: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 50%, #3b82f6 100%);
+  --grad-soft: linear-gradient(135deg, #dbeafe 0%, #eff4fb 100%);
+  --grad-deep: linear-gradient(135deg, #0c1e4a 0%, #1e3a8a 60%, #2563eb 100%);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Heebo', sans-serif; direction: rtl;
+  background: var(--bg); color: var(--ink);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+}
+.bg-type {
+  position: absolute;
+  top: 30px; left: 0; right: 0;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: clamp(80px, 22vw, 320px);
+  letter-spacing: -10px;
+  color: rgba(255,255,255,.55);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  overflow: hidden;
+  z-index: 0;
+}
+a { text-decoration: none; color: inherit; }
+.shell {
+  max-width: 1240px; margin: 0 auto; padding: 28px 24px 80px;
+  position: relative; z-index: 2;
+}
+.paper {
+  background: var(--paper);
+  border-radius: 28px;
+  box-shadow: 0 30px 80px -30px rgba(13,27,46,.18), 0 6px 20px -10px rgba(13,27,46,.06);
+  padding: 28px 36px 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── NAV ── */
+.nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 6px;
+  background: var(--paper-soft);
+  border-radius: 100px;
+  margin-bottom: 56px;
+  gap: 8px;
+}
+.logo {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 16px;
+  font-weight: 800; font-size: 18px; letter-spacing: -.5px;
+  flex-shrink: 0;
+}
+.logo-mark {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: var(--grad);
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 14px; font-weight: 800;
+  box-shadow: 0 6px 14px -4px rgba(29,78,216,.5);
+}
+.logo-mark::after {
+  content: ''; position: absolute; right: -3px; bottom: -3px;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: linear-gradient(135deg, #60a5fa, #3b82f6); border: 2px solid var(--paper-soft);
+}
+.nav-pills {
+  display: flex; gap: 4px; padding: 4px;
+  background: var(--paper); border-radius: 100px;
+}
+.nav-pills a {
+  padding: 9px 18px; border-radius: 100px;
+  font-size: 13px; font-weight: 600; color: var(--ink-soft);
+  transition: all .2s; white-space: nowrap;
+}
+.nav-pills a:hover { color: var(--ink); }
+.nav-pills a.active { background: var(--blue-pale); color: var(--blue-deep); }
+.nav-cta {
+  background: var(--grad); color: #fff;
+  padding: 12px 22px; border-radius: 100px;
+  font-weight: 600; font-size: 13px;
+  transition: all .2s; flex-shrink: 0; white-space: nowrap;
+  box-shadow: 0 8px 20px -6px rgba(29,78,216,.45);
+}
+.nav-cta:hover { transform: translateY(-1px); box-shadow: 0 12px 24px -6px rgba(29,78,216,.55); }
+
+/* mobile nav button */
+.nav-burger {
+  display: none;
+  width: 42px; height: 42px; border-radius: 100px;
+  background: var(--paper); border: none;
+  align-items: center; justify-content: center; cursor: pointer;
+  flex-shrink: 0; flex-direction: column; gap: 4px;
+}
+.nav-burger span { width: 18px; height: 2px; background: var(--ink); border-radius: 2px; }
+
+/* ── REVEAL ── */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ── HERO ── */
+.hero {
+  text-align: center;
+  padding: 24px 0 0;
+  min-height: calc(100vh - 160px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.hero-eyebrow {
+  font-size: 12px; font-weight: 600; letter-spacing: 4px;
+  color: var(--ink-soft); text-transform: uppercase;
+  margin-bottom: 22px;
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+}
+.hero-eyebrow::before, .hero-eyebrow::after {
+  content: ''; width: 28px; height: 1px; background: var(--ink-soft); opacity: .4;
+}
+.hero-title {
+  font-weight: 700; font-size: clamp(32px, 5.4vw, 72px);
+  letter-spacing: -2.5px; line-height: 1.05;
+  max-width: 900px; margin: 0 auto 20px; text-wrap: balance;
+}
+.hero-title .acc { background: var(--grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.hero-sub {
+  font-size: 16px; color: var(--ink-soft);
+  line-height: 1.7; max-width: 540px; margin: 0 auto 32px;
+}
+.hero-actions {
+  display: inline-flex; gap: 10px; align-items: center;
+  background: var(--paper-soft);
+  padding: 8px 8px 8px 18px;
+  border-radius: 100px;
+  margin-bottom: 56px;
+  flex-wrap: wrap; justify-content: center;
+}
+.btn-primary {
+  background: var(--grad); color: #fff;
+  padding: 12px 22px; border-radius: 100px;
+  font-weight: 600; font-size: 14px;
+  cursor: pointer; border: none;
+  font-family: 'Heebo', sans-serif;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: all .2s;
+  box-shadow: 0 10px 24px -8px rgba(29,78,216,.5);
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 14px 28px -8px rgba(29,78,216,.6); }
+.btn-play {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 14px; font-weight: 600; color: var(--ink);
+  background: transparent; border: none; cursor: pointer;
+  font-family: 'Heebo', sans-serif;
+}
+.btn-play .play-ic {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--ink); color: #fff;
+  display: flex; align-items: center; justify-content: center; font-size: 11px;
+}
+
+/* ── HERO STAGE ── */
+.stage {
+  position: relative;
+  max-width: 920px; margin: 0 auto;
+  padding: 18px;
+  background: var(--paper);
+  border-radius: 28px;
+  border: 1px solid var(--line);
+  box-shadow: 0 30px 60px -30px rgba(13,27,46,.18);
+}
+.stage-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 14px;
+}
+.stage-left, .stage-right { display: contents; }
+.stage-cell {
+  background: var(--paper-soft);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.cell-chart  { grid-column: 1; grid-row: 1; }
+.cell-hero   { grid-column: 2; grid-row: 1; background: var(--grad-deep); border-color: transparent; color: #fff; padding: 22px; position: relative; overflow: hidden; }
+.cell-convo  { grid-column: 1; grid-row: 2; }
+.cell-stats  { grid-column: 2; grid-row: 2; gap: 14px; }
+
+.cell-hero::before {
+  content: ''; position: absolute; right: -50px; top: -50px;
+  width: 180px; height: 180px;
+  background: radial-gradient(circle, rgba(96,165,250,.5) 0%, transparent 65%);
+  z-index: 0;
+}
+.cell-hero::after {
+  content: ''; position: absolute; left: -30px; bottom: -30px;
+  width: 120px; height: 120px;
+  background: radial-gradient(circle, rgba(29,78,216,.6) 0%, transparent 70%);
+  z-index: 0;
+}
+
+.card {
+  background: transparent;
+  border: none;
+  padding: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.card-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; gap: 8px; }
+.card-t { font-size: 13px; font-weight: 800; color: var(--ink); letter-spacing: -.3px; }
+.card-st { font-size: 11px; color: var(--ink-soft); font-weight: 500; margin-top: 2px; }
+.card-pill { font-size: 10px; font-weight: 700; color: #fff; background: var(--grad); padding: 4px 10px; border-radius: 100px; white-space: nowrap; box-shadow: 0 4px 10px -3px rgba(29,78,216,.5); }
+
+.chart { height: 90px; position: relative; margin-top: 4px; flex: 1; }
+.chart svg { width: 100%; height: 100%; }
+.chart-stat { display: flex; justify-content: space-between; align-items: end; margin-top: 12px; gap: 8px; flex-wrap: wrap; padding-top: 12px; border-top: 1px dashed var(--line); }
+.chart-stat .num { font-size: 22px; font-weight: 800; letter-spacing: -1px; background: var(--grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.chart-stat .delta { font-size: 11px; color: var(--green); font-weight: 700; }
+
+.convo { display: flex; flex-direction: column; gap: 7px; flex: 1; }
+.cv-msg { max-width: 88%; padding: 9px 13px; border-radius: 12px; font-size: 12px; line-height: 1.45; }
+.cv-msg.usr { align-self: flex-start; background: var(--paper); border: 1px solid var(--line); border-bottom-left-radius: 3px; color: var(--ink); }
+.cv-msg.bot { align-self: flex-end; background: var(--grad); color: #fff; border-bottom-right-radius: 3px; box-shadow: 0 6px 14px -6px rgba(29,78,216,.4); }
+.cv-msg.bot strong { color: #fde68a; }
+.cv-typing { align-self: flex-end; background: var(--grad); padding: 10px 14px; border-radius: 12px; border-bottom-right-radius: 3px; display: flex; gap: 4px; }
+.cv-typing span { width: 5px; height: 5px; border-radius: 50%; background: #fff; opacity: .6; animation: tdot 1.2s infinite; }
+.cv-typing span:nth-child(2) { animation-delay: .15s; }
+.cv-typing span:nth-child(3) { animation-delay: .3s; }
+@keyframes tdot { 0%,60%,100% { opacity: .4; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-3px); } }
+
+.big-num {
+  position: relative; z-index: 1;
+  height: 100%;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.big-num .lab { font-size: 11px; opacity: .9; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }
+.big-num .v { font-size: 56px; font-weight: 800; letter-spacing: -2.5px; line-height: 1; background: linear-gradient(135deg, #fff 0%, #bfdbfe 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.big-num .d { font-size: 12px; opacity: .85; margin-top: 10px; font-weight: 500; }
+
+.progress { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.prg-row { display: flex; align-items: center; gap: 10px; font-size: 11px; }
+.prg-row .pl { width: 50px; color: var(--ink-soft); font-weight: 600; }
+.prg-row .bar { flex: 1; height: 6px; background: var(--paper); border: 1px solid var(--line); border-radius: 100px; overflow: hidden; }
+.prg-row .bar > div { height: 100%; background: var(--grad); border-radius: 100px; }
+.prg-row .vl { font-weight: 700; min-width: 32px; text-align: left; }
+
+.split-row { display: flex; justify-content: space-between; align-items: center; padding-top: 14px; border-top: 1px dashed var(--line); margin-top: 14px; }
+.split-row .lbl { font-size: 12px; font-weight: 700; }
+.split-row .lbl-sub { font-size: 10px; color: var(--ink-soft); margin-top: 2px; }
+.split-row .pct { font-size: 26px; font-weight: 800; letter-spacing: -1px; background: var(--grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+
+.blue-blob { display: none; }
+
+/* floating tags */
+.float-tag {
+  position: absolute;
+  background: var(--paper);
+  padding: 9px 16px 9px 9px;
+  border-radius: 100px;
+  font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; gap: 8px;
+  box-shadow: 0 8px 24px -8px rgba(13,27,46,.15);
+  border: 1px solid var(--line);
+}
+.float-tag .tg-dot {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--blue-soft); color: var(--blue-deep);
+  display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800;
+}
+.ft-1 { top: 60px; right: -30px; transform: rotate(-4deg); animation: ft1 6s ease-in-out infinite; }
+.ft-2 { top: 220px; right: -50px; transform: rotate(-3deg); animation: ft1 7s ease-in-out infinite reverse; }
+.ft-3 { top: 380px; right: -20px; transform: rotate(-5deg); animation: ft1 8s ease-in-out infinite; }
+.ft-4 { top: 100px; left: -40px; transform: rotate(4deg); animation: ft2 7s ease-in-out infinite; }
+.ft-5 { top: 280px; left: -60px; transform: rotate(3deg); animation: ft2 6s ease-in-out infinite reverse; }
+@keyframes ft1 { 0%,100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-8px) rotate(-2deg); } }
+@keyframes ft2 { 0%,100% { transform: translateY(0) rotate(4deg); } 50% { transform: translateY(-8px) rotate(2deg); } }
+
+/* ── AGENT EXPLAINER (FULL-WIDTH REDESIGN) ── */
+.agent-explainer {
+  position: relative;
+  background: var(--paper);
+  border-radius: 32px;
+  padding: 64px 56px;
+  overflow: hidden;
+  box-shadow: 0 30px 80px -30px rgba(13,27,46,.18), 0 6px 20px -10px rgba(13,27,46,.06);
+  margin-bottom: 80px;
+}
+.agent-explainer::before {
+  content: '01';
+  position: absolute;
+  top: -40px; left: 40px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 360px;
+  letter-spacing: -16px;
+  color: rgba(29,78,216,.05);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+.agent-explainer::after {
+  content: '';
+  position: absolute;
+  right: -120px; bottom: -120px;
+  width: 380px; height: 380px;
+  background: radial-gradient(circle, rgba(59,130,246,.18) 0%, transparent 65%);
+  pointer-events: none;
+}
+.agent-head {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 32px;
+  margin-bottom: 56px;
+  padding-bottom: 28px;
+  border-bottom: 1px dashed rgba(13,27,46,.15);
+}
+.agent-head-text { max-width: 720px; }
+.agent-eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 12px; font-weight: 700; letter-spacing: 2px;
+  color: var(--blue-deep); text-transform: uppercase;
+  margin-bottom: 18px;
+}
+.agent-eyebrow .dot {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--grad);
+  box-shadow: 0 0 0 4px rgba(29,78,216,.12);
+}
+.agent-h1 {
+  font-weight: 700;
+  font-size: clamp(32px, 4.4vw, 56px);
+  letter-spacing: -2px;
+  line-height: 1.05;
+  text-wrap: balance;
+}
+.agent-h1 .acc {
+  background: var(--grad);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.agent-lead {
+  font-size: 17px;
+  color: var(--ink-soft);
+  line-height: 1.7;
+  margin-top: 16px;
+  max-width: 560px;
+}
+.agent-badge {
+  position: relative;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  padding: 20px 22px;
+  background: var(--grad-deep);
+  border-radius: 22px;
+  color: #fff;
+  box-shadow: 0 20px 40px -16px rgba(29,78,216,.5);
+  flex-shrink: 0;
+}
+.agent-badge-icon {
+  width: 56px; height: 56px; border-radius: 16px;
+  background: rgba(255,255,255,.14);
+  border: 1px solid rgba(255,255,255,.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+}
+.agent-badge-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 2.5px;
+  opacity: .85; text-transform: uppercase;
+}
+.agent-badge-status {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600;
+}
+.agent-badge-status .pulse {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 0 0 rgba(74,222,128,.6);
+  animation: pulse 1.8s infinite;
+}
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(74,222,128,.6); }
+  70% { box-shadow: 0 0 0 10px rgba(74,222,128,0); }
+  100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); }
+}
+/* CAPABILITIES GRID */
+.cap-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 48px;
+}
+.cap {
+  position: relative;
+  background: var(--paper-soft);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 28px 24px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s, border-color .35s;
+  overflow: hidden;
+}
+.cap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--grad);
+  opacity: 0;
+  transition: opacity .35s;
+  z-index: 0;
+}
+.cap:hover { transform: translateY(-6px); border-color: transparent; box-shadow: 0 24px 48px -20px rgba(29,78,216,.4); }
+.cap:hover::before { opacity: 1; }
+.cap:hover .cap-num,
+.cap:hover .cap-title,
+.cap:hover .cap-text,
+.cap:hover .cap-text strong { color: #fff; }
+.cap:hover .cap-text strong { color: #fde68a; }
+.cap:hover .cap-icon { background: rgba(255,255,255,.18); border-color: rgba(255,255,255,.25); color: #fff; }
+.cap > * { position: relative; z-index: 1; }
+.cap-top { display: flex; align-items: center; justify-content: space-between; }
+.cap-icon {
+  width: 52px; height: 52px; border-radius: 14px;
+  background: #fff;
+  border: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+  transition: all .35s;
+  color: var(--blue-deep);
+}
+.cap-icon svg { width: 26px; height: 26px; }
+.cap-num {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 28px;
+  letter-spacing: -1.5px;
+  color: rgba(29,78,216,.18);
+  transition: color .35s;
+}
+.cap-title { font-size: 17px; font-weight: 800; letter-spacing: -.4px; line-height: 1.3; color: var(--ink); transition: color .35s; }
+.cap-text { font-size: 13.5px; line-height: 1.6; color: var(--ink-soft); transition: color .35s; }
+.cap-text strong { color: var(--blue-deep); font-weight: 700; }
+/* CONTRAST CALLOUT */
+.agent-contrast {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 24px;
+  align-items: stretch;
+  background: var(--paper-soft);
+  border: 1px dashed rgba(13,27,46,.18);
+  border-radius: 22px;
+  padding: 24px;
+}
+.contrast-col {
+  padding: 18px 22px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.contrast-col.bad { background: #fff; border: 1px solid var(--line); }
+.contrast-col.good { background: var(--grad-deep); color: #fff; box-shadow: 0 20px 40px -16px rgba(29,78,216,.4); }
+.contrast-label { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; opacity: .8; }
+.contrast-label .ico { width: 18px; height: 18px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; }
+.contrast-col.bad .contrast-label .ico { background: #fee2e2; color: #b91c1c; }
+.contrast-col.good .contrast-label .ico { background: rgba(255,255,255,.2); color: #fff; }
+.contrast-col h4 { font-size: 18px; font-weight: 800; letter-spacing: -.4px; }
+.contrast-col p { font-size: 13.5px; line-height: 1.6; color: var(--ink-soft); }
+.contrast-col.good p { color: rgba(255,255,255,.85); }
+.contrast-arrow { display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--blue); font-weight: 800; width: 44px; }
+@media (max-width: 1080px) {
+  .cap-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 760px) {
+  .agent-explainer { padding: 36px 24px; border-radius: 24px; }
+  .agent-explainer::before { font-size: 220px; top: -20px; left: 20px; }
+  .agent-head { grid-template-columns: 1fr; gap: 20px; }
+  .agent-badge { flex-direction: row; align-self: flex-start; padding: 12px 16px; gap: 14px; }
+  .agent-badge-icon { width: 44px; height: 44px; font-size: 22px; border-radius: 12px; }
+  .agent-badge-text { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+  .cap-grid { grid-template-columns: 1fr; gap: 12px; }
+  .agent-contrast { grid-template-columns: 1fr; gap: 12px; }
+  .contrast-arrow { transform: rotate(90deg); width: 100%; }
+}
+
+/* ── PROOF ── */
+.proof {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  margin-top: 100px;
+  padding: 32px;
+  background: var(--paper-soft);
+  border-radius: 20px;
+}
+.proof-stat { text-align: center; }
+.proof-stat .pn { font-size: clamp(28px, 3.4vw, 44px); font-weight: 800; background: var(--grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -1.5px; line-height: 1; }
+.proof-stat .pl { font-size: 12px; color: var(--ink-soft); margin-top: 8px; font-weight: 500; }
+
+/* ── SECTIONS ── */
+.section { margin-top: 100px; }
+.section-head { text-align: center; margin-bottom: 56px; }
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 12px; font-weight: 700; letter-spacing: 2px;
+  color: var(--blue-deep); text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--grad); }
+.stitle {
+  font-weight: 700; font-size: clamp(28px, 4vw, 48px); letter-spacing: -1.5px;
+  line-height: 1.1; text-wrap: balance;
+}
+.stitle .acc { background: var(--grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.ssub { font-size: 16px; color: var(--ink-soft); line-height: 1.7; max-width: 580px; margin: 16px auto 0; }
+
+/* ── HOW ── */
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.step {
+  background: var(--paper-soft); border: 1px solid var(--line);
+  border-radius: 20px; padding: 28px 24px;
+  transition: all .3s; position: relative;
+}
+.step:hover { border-color: var(--blue); transform: translateY(-4px); box-shadow: 0 20px 40px -16px rgba(29,78,216,.2); }
+.step-num { font-size: 11px; font-weight: 700; color: var(--ink-soft); letter-spacing: 1px; margin-bottom: 16px; }
+.step-icon {
+  width: 52px; height: 52px; border-radius: 14px;
+  background: var(--grad);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; margin-bottom: 20px;
+  box-shadow: 0 10px 24px -8px rgba(29,78,216,.4);
+}
+.step h3 { font-size: 18px; font-weight: 800; margin-bottom: 8px; letter-spacing: -.5px; }
+.step p { font-size: 14px; color: var(--ink-soft); line-height: 1.65; }
+
+/* ── CONVERSATIONS ── */
+.tabs { display: flex; gap: 8px; justify-content: center; margin-bottom: 32px; flex-wrap: wrap; }
+.tab-btn {
+  padding: 9px 18px; border-radius: 100px;
+  border: 1px solid var(--line); background: var(--paper-soft);
+  color: var(--ink-soft); font-size: 13px; font-weight: 600;
+  cursor: pointer; font-family: 'Heebo',sans-serif;
+  transition: all .2s; white-space: nowrap;
+}
+.tab-btn:hover { color: var(--ink); border-color: var(--ink); }
+.tab-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+.convo-panel { display: none; }
+.convo-panel.active {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;
+}
+/* ── WHATSAPP PHONE MOCK ── */
+.wa-phone {
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 28px 64px rgba(0,0,0,0.24), 0 4px 16px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 310px;
+  margin: 0 auto;
+  background: #fff;
+  font-family: -apple-system, 'Segoe UI', 'Heebo', sans-serif;
+}
+.wa-statusbar {
+  background: #054d44;
+  color: rgba(255,255,255,.85);
+  font-size: 10px;
+  padding: 5px 14px 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  letter-spacing: .3px;
+}
+.wa-header {
+  background: #075E54;
+  color: #fff;
+  padding: 8px 12px 10px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  direction: ltr;
+}
+.wa-back { font-size: 20px; opacity: .9; cursor: pointer; }
+.wa-av-sm {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: #128C7E;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; flex-shrink: 0;
+}
+.wa-hdr-info { flex: 1; }
+.wa-nm { font-size: 13px; font-weight: 600; line-height: 1.2; }
+.wa-sub { font-size: 11px; opacity: .85; min-height: 14px; }
+.wa-hdr-icons { display: flex; gap: 14px; font-size: 16px; opacity: .85; }
+.wa-body {
+  background: #E5DDD5;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23b2bec3' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  padding: 8px 8px 4px;
+  height: 330px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  scroll-behavior: smooth;
+}
+.wa-body::-webkit-scrollbar { width: 3px; }
+.wa-body::-webkit-scrollbar-thumb { background: rgba(0,0,0,.18); border-radius: 2px; }
+.wa-msg {
+  display: flex;
+  flex-direction: column;
+  max-width: 80%;
+  opacity: 0;
+  transform: translateY(6px) scale(.98);
+  transition: opacity .2s ease, transform .2s ease;
+}
+.wa-msg.in { opacity: 1; transform: translateY(0) scale(1); }
+.wa-msg.bot { align-self: flex-start; }
+.wa-msg.usr { align-self: flex-end; }
+.wa-bubble {
+  padding: 6px 10px 2px;
+  font-size: 13px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+  box-shadow: 0 1px 1px rgba(0,0,0,.13);
+}
+.wa-msg.bot .wa-bubble {
+  background: #fff;
+  border-radius: 0 8px 8px 8px;
+  color: #111;
+}
+.wa-msg.usr .wa-bubble {
+  background: #D9FDD3;
+  border-radius: 8px 0 8px 8px;
+  color: #111;
+}
+.wa-meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2px;
+  padding: 1px 6px 4px;
+  font-size: 10px;
+  color: rgba(0,0,0,.38);
+  direction: ltr;
+}
+.wa-ticks { color: #53bdeb; font-size: 12px; letter-spacing: -2px; }
+.wa-typing-row {
+  align-self: flex-start;
+  background: #fff;
+  border-radius: 0 8px 8px 8px;
+  padding: 10px 14px;
+  display: none;
+  gap: 4px;
+  box-shadow: 0 1px 1px rgba(0,0,0,.13);
+  margin: 2px 0;
+}
+.wa-typing-row.show { display: flex; }
+.wa-typing-row span {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #999;
+  animation: waDot 1.2s infinite;
+}
+.wa-typing-row span:nth-child(2) { animation-delay: .15s; }
+.wa-typing-row span:nth-child(3) { animation-delay: .3s; }
+@keyframes waDot {
+  0%,60%,100% { opacity: .35; transform: translateY(0); }
+  30% { opacity: 1; transform: translateY(-3px); }
+}
+.wa-inputbar {
+  background: #F0F0F0;
+  padding: 7px 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  direction: ltr;
+  border-top: 1px solid #ddd;
+}
+.wa-inp-fake {
+  flex: 1;
+  background: #fff;
+  border-radius: 22px;
+  padding: 8px 14px;
+  font-size: 13px;
+  color: #aaa;
+}
+.wa-mic-ic {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: #25D366;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; flex-shrink: 0;
+}
+
+.convo-info h3 { font-size: clamp(22px, 2.4vw, 30px); font-weight: 800; letter-spacing: -1px; line-height: 1.2; margin-bottom: 12px; }
+.convo-info p { font-size: 14.5px; color: var(--ink-soft); line-height: 1.7; margin-bottom: 20px; }
+.highlights { display: flex; flex-direction: column; gap: 10px; }
+.hl {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px; background: var(--paper-soft);
+  border: 1px solid var(--line); border-radius: 12px;
+  font-size: 14px; font-weight: 500;
+}
+.hl-dot {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--grad);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center; font-size: 14px;
+  flex-shrink: 0;
+  box-shadow: 0 6px 14px -4px rgba(29,78,216,.4);
+}
+
+/* ── CHAT DEMO ── */
+.demo-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+.demo-info { display: flex; flex-direction: column; gap: 24px; }
+.demo-desc { font-size: 16px; color: var(--ink-soft); line-height: 1.8; }
+.demo-phone { width: 100%; max-width: 400px; margin: 0 auto; }
+.demo-phone .wa-body { height: 400px; }
+.demo-inp {
+  flex: 1; background: #fff; border: none; border-radius: 22px;
+  padding: 9px 14px; font-size: 13.5px; outline: none;
+  font-family: 'Heebo', sans-serif; direction: rtl; min-width: 0;
+}
+.demo-send {
+  width: 40px; height: 40px; border-radius: 50%; border: none;
+  background: #25D366; color: #fff; font-size: 18px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: opacity .2s;
+}
+.demo-send:disabled { opacity: .4; cursor: not-allowed; }
+.demo-inputbar { direction: rtl; padding: 8px 10px; }
+
+/* ── FEATURES ── */
+.features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.feat {
+  background: var(--paper-soft); border: 1px solid var(--line);
+  border-radius: 20px; padding: 28px 24px;
+  transition: all .3s;
+}
+.feat { cursor: pointer; }
+.feat:hover { border-color: var(--blue); transform: translateY(-2px); }
+.feat.open { border-color: var(--blue); background: var(--blue-pale); }
+.feat-icon {
+  width: 52px; height: 52px; border-radius: 14px;
+  background: var(--grad);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 18px;
+  box-shadow: 0 10px 22px -8px rgba(29,78,216,.4);
+  padding: 10px;
+}
+.feat-icon img { width: 100%; height: 100%; object-fit: contain; }
+.feat-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.feat h3 { font-size: 18px; font-weight: 800; }
+.feat-arrow {
+  width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+  background: var(--paper); display: flex; align-items: center; justify-content: center;
+  font-size: 14px; color: var(--blue); font-weight: 700;
+  transition: all .3s;
+}
+.feat.open .feat-arrow { background: var(--grad); color: #fff; transform: rotate(45deg); }
+.feat p {
+  font-size: 14px; color: var(--ink-soft); line-height: 1.7;
+  max-height: 0; overflow: hidden;
+  transition: max-height .4s ease, margin .3s;
+  margin-top: 0;
+}
+.feat.open p { max-height: 400px; margin-top: 14px; }
+
+/* ── FAQ ── */
+.faq-wrap { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }
+.faq-item {
+  background: var(--paper-soft); border: 1px solid var(--line);
+  border-radius: 14px; overflow: hidden;
+  transition: all .25s;
+}
+.faq-item.open { border-color: var(--blue); background: var(--blue-pale); }
+.faq-q {
+  padding: 18px 22px; font-size: 15px; font-weight: 600; cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between;
+  user-select: none; gap: 16px;
+}
+.faq-icon {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--paper); display: flex; align-items: center; justify-content: center;
+  font-size: 14px; color: var(--blue);
+  flex-shrink: 0; transition: all .3s; font-weight: 700;
+}
+.faq-item.open .faq-icon { background: var(--grad); color: #fff; transform: rotate(45deg); }
+.faq-a {
+  max-height: 0; overflow: hidden;
+  transition: max-height .4s ease, padding .3s;
+  padding: 0 22px;
+  color: var(--ink-soft); font-size: 14px; line-height: 1.7;
+}
+.faq-item.open .faq-a { max-height: 200px; padding: 0 22px 18px; }
+
+/* ── LEAD ── */
+.lead-box {
+  background: var(--grad-deep); color: #fff;
+  border-radius: 24px; padding: 56px 40px;
+  text-align: center; position: relative; overflow: hidden;
+}
+.lead-box::before {
+  content: ''; position: absolute; width: 360px; height: 360px;
+  background: var(--blue-mid); border-radius: 50%; filter: blur(20px);
+  top: -180px; left: -100px; opacity: .4;
+}
+.lead-box > * { position: relative; z-index: 1; }
+.lead-title {
+  font-weight: 700; font-size: clamp(28px, 4vw, 48px); letter-spacing: -1.5px;
+  line-height: 1.05; margin-bottom: 12px;
+}
+.lead-sub { font-size: 16px; opacity: .9; margin-bottom: 32px; }
+.lead-form { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; max-width: 720px; margin: 0 auto; }
+.lead-inp, .lead-sel {
+  padding: 14px 18px; border-radius: 100px; font-size: 14px;
+  background: rgba(255,255,255,.95); color: var(--ink);
+  border: none; outline: none; flex: 1; min-width: 160px;
+  font-family: 'Heebo',sans-serif;
+  text-align: right; direction: rtl;
+}
+.lead-sel { appearance: none; }
+.lead-btn {
+  padding: 14px 30px; border-radius: 100px; border: none;
+  background: var(--ink); color: #fff;
+  font-size: 14px; font-weight: 700; font-family: 'Heebo',sans-serif;
+  cursor: pointer; transition: all .2s; white-space: nowrap;
+}
+.lead-btn:hover { transform: translateY(-2px); }
+.lead-ok { display: none; background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.3); border-radius: 16px; padding: 20px; font-size: 16px; font-weight: 700; }
+
+/* ── FOOTER ── */
+.footer-row {
+  margin-top: 48px;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+  padding-top: 28px; border-top: 1px solid var(--line);
+}
+.footer-row .links { display: flex; gap: 20px; }
+.footer-row .links a { font-size: 12px; color: var(--ink-soft); }
+.footer-row .links a:hover { color: var(--ink); }
+.footer-copy { font-size: 11px; color: var(--ink-soft); text-align: center; margin-top: 12px; }
+
+/* ───── RESPONSIVE ───── */
+@media (max-width: 900px) {
+  .shell { padding: 14px 10px 60px; }
+  .paper { padding: 16px 14px 40px; border-radius: 20px; }
+  .nav { padding: 4px; margin-bottom: 32px; }
+  .nav-pills { display: none; }
+  .nav-burger { display: flex; }
+  .logo { padding: 4px 10px; font-size: 16px; }
+  .logo-mark { width: 26px; height: 26px; }
+  .nav-cta { padding: 10px 16px; font-size: 12px; }
+
+  .hero-actions { padding: 6px; gap: 6px; }
+  .btn-primary, .btn-play { padding: 10px 16px; font-size: 13px; }
+  .btn-play .play-ic { width: 28px; height: 28px; }
+
+  .stage { padding: 14px; border-radius: 18px; }
+  .stage-grid { grid-template-columns: 1fr; gap: 12px; }
+  .float-tag { display: none; }
+  .blue-blob { display: none; }
+  .big-num .v { font-size: 36px; }
+
+  .proof { grid-template-columns: 1fr 1fr; padding: 20px; gap: 12px; margin-top: 60px; }
+  .proof-stat .pn { font-size: 28px; }
+
+  .section { margin-top: 60px; }
+  .section-head { margin-bottom: 32px; }
+
+  .steps { grid-template-columns: 1fr; gap: 12px; }
+
+  .convo-panel.active { grid-template-columns: 1fr; gap: 24px; }
+  .convo-info { order: -1; text-align: center; }
+  .highlights { text-align: right; }
+  .tabs { gap: 6px; }
+  .tab-btn { padding: 8px 14px; font-size: 12px; }
+
+  .chat-grid { grid-template-columns: 1fr; gap: 24px; }
+  .chat-side { text-align: center; }
+  .quick-btns { text-align: right; }
+  .chat-widget { height: 440px; }
+
+  .demo-wrap { grid-template-columns: 1fr; gap: 28px; }
+  .demo-info { text-align: center; align-items: center; }
+  .demo-info a { align-self: center !important; }
+
+  .features-grid { grid-template-columns: 1fr; gap: 12px; }
+
+  .lead-box { padding: 36px 20px; border-radius: 18px; }
+  .lead-form { flex-direction: column; }
+  .lead-inp, .lead-sel, .lead-btn { width: 100%; min-width: 0; }
+
+  .footer-row { flex-direction: column; text-align: center; }
+
+  .bg-type { display: none; }
+}
+
+@media (max-width: 480px) {
+  .shell { padding: 10px 6px 40px; }
+  .paper { padding: 12px 10px 32px; border-radius: 16px; }
+  .hero-actions { width: 100%; flex-direction: column; padding: 8px; border-radius: 18px; }
+  .hero-actions .btn-primary, .hero-actions .btn-play { width: 100%; justify-content: center; }
+  .proof { grid-template-columns: 1fr 1fr; }
+  .stage { padding: 12px; }
+  .convo-msgs { padding: 14px; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-type">PINI</div>
+
+<div class="shell">
+  <div class="paper">
+
+    <!-- NAV -->
+    <div class="nav">
+      <div class="logo">
+        <div class="logo-mark">P</div>
+        pini
+      </div>
+      <div class="nav-pills">
+        <a href="#" class="active">בית</a>
+        <a href="#how">איך זה עובד</a>
+        <a href="#conversations">שיחות</a>
+        <a href="#features">יתרונות</a>
+        <a href="#faq">שאלות</a>
+      </div>
+      <button class="nav-burger" aria-label="menu" onclick="document.querySelector('.nav-pills').style.display = document.querySelector('.nav-pills').style.display === 'flex' ? 'none' : 'flex'">
+        <span></span><span></span><span></span>
+      </button>
+      <a href="#lead" class="nav-cta">קבע פגישה</a>
+    </div>
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-eyebrow">PINI – סוכן AI לעסקים</div>
+      <h1 class="hero-title">חוסכים זמן.<br><span class="acc">לא מפספסים לקוחות.</span></h1>
+      <p class="hero-sub">עסקים קטנים מפסידים לקוחות כל יום בגלל חוסר מענה מהיר. פניות בוואטסאפ, אינסטגרם ושיחות – הכל מצטבר לעומס אחד גדול.</p>
+      <div class="hero-actions">
+        <a href="#lead" class="btn-primary">קבע פגישת היכרות →</a>
+        <button class="btn-play" onclick="document.getElementById('conversations').scrollIntoView({behavior:'smooth'})"><span class="play-ic">▶</span> צפה בדמו</button>
+      </div>
+    </div>
+
+    <!-- AGENT EXPLAINER -->
+    <section class="agent-explainer reveal">
+      <div class="agent-head">
+        <div class="agent-head-text">
+          <div class="agent-eyebrow"><span class="dot"></span> מה זה בעצם</div>
+          <h2 class="agent-h1">לא עוד בוט עם תשובות קבועות.<br><span class="acc">סוכן חכם שחושב איתך.</span></h2>
+          <p class="agent-lead">סוכן ה‑AI של pini לא רק עונה – הוא מבין הקשר, מבצע פעולות אמיתיות בעסק שלך, ולומד עם הזמן להפוך כל שיחה לטובה יותר.</p>
+        </div>
+        <div class="agent-badge">
+          <div class="agent-badge-icon">🤖</div>
+          <div class="agent-badge-text" style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+            <div class="agent-badge-label">pini agent</div>
+            <div class="agent-badge-status"><span class="pulse"></span> פעיל 24/7</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cap-grid">
+        <article class="cap">
+          <div class="cap-top">
+            <div class="cap-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M7 9h10"/><path d="M7 13h6"/></svg>
+            </div>
+            <div class="cap-num">01</div>
+          </div>
+          <h3 class="cap-title">מבין שפה טבעית</h3>
+          <p class="cap-text">קורא הודעות של לקוחות בסלנג, בקיצורים ובשגיאות כתיב — <strong>בדיוק כמו שאתה מדבר</strong>.</p>
+        </article>
+
+        <article class="cap">
+          <div class="cap-top">
+            <div class="cap-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            </div>
+            <div class="cap-num">02</div>
+          </div>
+          <h3 class="cap-title">מגיב מותאם אישית</h3>
+          <p class="cap-text">זוכר היסטוריה, מתחשב בהקשר ועונה <strong>בטון של העסק שלך</strong> — לא תשובה גנרית.</p>
+        </article>
+
+        <article class="cap">
+          <div class="cap-top">
+            <div class="cap-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            </div>
+            <div class="cap-num">03</div>
+          </div>
+          <h3 class="cap-title">מבצע פעולות אמיתיות</h3>
+          <p class="cap-text">קביעת תור, עדכון הזמנה, שליחת קישור תשלום — <strong>גומר את העבודה</strong>, לא רק עונה.</p>
+        </article>
+
+        <article class="cap">
+          <div class="cap-top">
+            <div class="cap-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>
+            </div>
+            <div class="cap-num">04</div>
+          </div>
+          <h3 class="cap-title">לומד ומשתפר</h3>
+          <p class="cap-text">כל שיחה הופכת אותו חכם יותר. אחרי שבוע, <strong>הוא מכיר את הלקוחות שלך</strong> טוב מכולם.</p>
+        </article>
+      </div>
+
+      <div class="agent-contrast">
+        <div class="contrast-col bad">
+          <div class="contrast-label"><span class="ico">✕</span> בוט רגיל</div>
+          <h4>תשובות קבועות מראש</h4>
+          <p>תפריט עם מספרים. אם הלקוח שואל משהו בניסוח אחר — נופל.</p>
+        </div>
+        <div class="contrast-arrow">←</div>
+        <div class="contrast-col good">
+          <div class="contrast-label"><span class="ico">✓</span> סוכן pini</div>
+          <h4>חושב, מבין, פועל</h4>
+          <p>מתנהג כמו נציג שירות אמיתי. סוגר עסקה — לא רק שולח קישור.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW -->
+    <div class="section" id="how">
+      <div class="section-head reveal">
+        <div class="eyebrow"><span class="dot"></span> איך זה עובד</div>
+        <h2 class="stitle">שלושה צעדים לצ'אט<br>שעובד <span class="acc">בשבילך</span></h2>
+        <p class="ssub">הקמה של 30 דקות – ואז pini מוכר בשבילך מסביב לשעון.</p>
+      </div>
+      <div class="steps">
+        <div class="step reveal">
+          <div class="step-num">STEP 01</div>
+          <div class="step-icon">⚙️</div>
+          <h3>מגדירים את הצ'אט</h3>
+          <p>מזינים מוצרים, מחירים ומבצעים בפאנל פשוט. אין צורך בידע טכני.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">STEP 02</div>
+          <div class="step-icon">💬</div>
+          <h3>הצ'אט עובד בשבילך</h3>
+          <p>עונה ללקוחות, בונה תפריטים, מציע מבצעים וסוגר הזמנות – 24/7.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">STEP 03</div>
+          <div class="step-icon">📲</div>
+          <h3>הזמנות מוכנות אצלך</h3>
+          <p>ההזמנות מגיעות לוואטסאפ שלך מסודרות וברורות. בלי טלפונים.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONVERSATIONS -->
+    <div class="section" id="conversations">
+      <div class="section-head reveal">
+        <div class="eyebrow"><span class="dot"></span> שיחות אמיתיות</div>
+        <h2 class="stitle">ראה איך <span class="acc">pini</span> מדבר<br>עם הלקוחות שלך</h2>
+      </div>
+      <div class="tabs reveal">
+        <button class="tab-btn active" onclick="showConvo('barber',this)">✂️ מספרה</button>
+        <button class="tab-btn" onclick="showConvo('cakes',this)">🎂 קונדיטוריה</button>
+        <button class="tab-btn" onclick="showConvo('butcher',this)">🥩 קצביה</button>
+        <button class="tab-btn" onclick="showConvo('studio',this)">🎨 סטודיו</button>
+      </div>
+
+      <div class="convo-panel active" id="convo-barber">
+        <div class="wa-phone reveal">
+          <div class="wa-statusbar"><span>21:14</span><span>📶 🔋</span></div>
+          <div class="wa-header">
+            <span class="wa-back">‹</span>
+            <div class="wa-av-sm">✂️</div>
+            <div class="wa-hdr-info">
+              <div class="wa-nm">מספרת סטייל – רון</div>
+              <div class="wa-sub" id="wa-sub-barber">מחובר</div>
+            </div>
+            <div class="wa-hdr-icons">📞 ⋮</div>
+          </div>
+          <div class="wa-body" id="wa-body-barber"></div>
+          <div class="wa-inputbar">
+            <div class="wa-inp-fake">הודעה</div>
+            <div class="wa-mic-ic">🎤</div>
+          </div>
+        </div>
+        <div class="convo-info reveal">
+          <div class="eyebrow"><span class="dot"></span> תרחיש 01</div>
+          <h3>תור שנסגר<br>בשעה 21:00</h3>
+          <p>pini הציג חלונות פנויים מהיומן שלך, נקב במחיר לפי המחירון שאתה עדכנת וסגר את התור. אתה תקבל התראה מיידית בטלפון עם קביעת התור.</p>
+          <div class="highlights">
+            <div class="hl"><div class="hl-dot">📅</div><span>זמינות בזמן אמת מהיומן שלך</span></div>
+            <div class="hl"><div class="hl-dot">💈</div><span>תמחור לפי המחירון שאתה מגדיר</span></div>
+            <div class="hl"><div class="hl-dot">🔔</div><span>התראה מיידית על כל תור חדש</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="convo-panel" id="convo-cakes">
+        <div class="wa-phone reveal">
+          <div class="wa-statusbar"><span>11:30</span><span>📶 🔋</span></div>
+          <div class="wa-header">
+            <span class="wa-back">‹</span>
+            <div class="wa-av-sm">🎂</div>
+            <div class="wa-hdr-info">
+              <div class="wa-nm">עוגות של מיכל</div>
+              <div class="wa-sub" id="wa-sub-cakes">מחובר</div>
+            </div>
+            <div class="wa-hdr-icons">📞 ⋮</div>
+          </div>
+          <div class="wa-body" id="wa-body-cakes"></div>
+          <div class="wa-inputbar">
+            <div class="wa-inp-fake">הודעה</div>
+            <div class="wa-mic-ic">🎤</div>
+          </div>
+        </div>
+        <div class="convo-info reveal">
+          <div class="eyebrow"><span class="dot"></span> תרחיש 02</div>
+          <h3>הזמנת עוגה<br>מותאמת אישית</h3>
+          <p>לקוחה ביקשה עוגת יום הולדת ל-20 איש בעיצוב וינטג׳. פיני אסף את כל הפרטים לפי הקריטריונים שהגדרת — ולא אישר דבר לבד. הוא שלח הכול למיכל ואמר ללקוחה שמיכל תחזור אליה בהקדם עם אישור סופי.</p>
+          <div class="highlights">
+            <div class="hl"><div class="hl-dot">💬</div><span>מנהל שיחה טבעית בוואטסאפ</span></div>
+            <div class="hl"><div class="hl-dot">🧁</div><span>מתמחר לפי גודל ועיצוב</span></div>
+            <div class="hl"><div class="hl-dot">✅</div><span>הזמנות מורכבות יוצאות לאישור שלך</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="convo-panel" id="convo-butcher">
+        <div class="wa-phone reveal">
+          <div class="wa-statusbar"><span>14:32</span><span>📶 🔋</span></div>
+          <div class="wa-header">
+            <span class="wa-back">‹</span>
+            <div class="wa-av-sm">🥩</div>
+            <div class="wa-hdr-info">
+              <div class="wa-nm">קצביית בן דוד</div>
+              <div class="wa-sub" id="wa-sub-butcher">מחובר</div>
+            </div>
+            <div class="wa-hdr-icons">📞 ⋮</div>
+          </div>
+          <div class="wa-body" id="wa-body-butcher"></div>
+          <div class="wa-inputbar">
+            <div class="wa-inp-fake">הודעה</div>
+            <div class="wa-mic-ic">🎤</div>
+          </div>
+        </div>
+        <div class="convo-info reveal">
+          <div class="eyebrow"><span class="dot"></span> תרחיש 03</div>
+          <h3>בניית תפריט<br>בשניות</h3>
+          <p>הלקוח שלח הודעה שהוא צריך בשר למנגל עם מספר אנשים ותקציב. הסוכן שלח רשימה מאוזנת לפי המחירון שעדכנת, הציע תוספות מתאימות ותיאם איסוף. אתה תקבל התראה מיידית עם פרטי ההזמנה וזמן האיסוף.</p>
+          <div class="highlights">
+            <div class="hl"><div class="hl-dot">💰</div><span>בונה הזמנה לפי תקציב והמלאי שלך</span></div>
+            <div class="hl"><div class="hl-dot">🛒</div><span>מציע תוספות בטבעיות</span></div>
+            <div class="hl"><div class="hl-dot">🕓</div><span>מתאם איסוף לפי הזמינות שהגדרת</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="convo-panel" id="convo-studio">
+        <div class="wa-phone reveal">
+          <div class="wa-statusbar"><span>19:47</span><span>📶 🔋</span></div>
+          <div class="wa-header">
+            <span class="wa-back">‹</span>
+            <div class="wa-av-sm">🎨</div>
+            <div class="wa-hdr-info">
+              <div class="wa-nm">סטודיו צבע ויוצרים</div>
+              <div class="wa-sub" id="wa-sub-studio">מחובר</div>
+            </div>
+            <div class="wa-hdr-icons">📞 ⋮</div>
+          </div>
+          <div class="wa-body" id="wa-body-studio"></div>
+          <div class="wa-inputbar">
+            <div class="wa-inp-fake">הודעה</div>
+            <div class="wa-mic-ic">🎤</div>
+          </div>
+        </div>
+        <div class="convo-info reveal">
+          <div class="eyebrow"><span class="dot"></span> תרחיש 04</div>
+          <h3>עשרות פניות<br>בו-זמנית</h3>
+          <p>אחרי שהסטודיו פרסם קמפיין לסדנה החדשה, עשרות הודעות הציפו את הוואטסאפ תוך שעה. pini ענה לכולם במקביל תוך שניות, סינן לפי הקריטריונים שהגדרת (רמה, תחום עניין, זמינות), וקבע פגישות רק עם הרלוונטיים. הבעלים פתח את היומן וראה רק פגישות שעברו סינון — בזמן שאף לקוח לא חיכה לתשובה.</p>
+          <div class="highlights">
+            <div class="hl"><div class="hl-dot">⚡</div><span>מענה מיידי במקביל לעשרות לקוחות</span></div>
+            <div class="hl"><div class="hl-dot">🎯</div><span>סינון אוטומטי לפי הקריטריונים שלך</span></div>
+            <div class="hl"><div class="hl-dot">📅</div><span>פגישות רק עם לקוחות רלוונטיים</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHAT DEMO -->
+    <div class="section" id="chat-demo">
+      <div class="section-head reveal">
+        <div class="eyebrow"><span class="dot"></span> נסה עכשיו</div>
+        <h2 class="stitle">דבר איתנו <span class="acc">עכשיו</span></h2>
+      </div>
+      <div class="demo-wrap">
+        <div class="demo-info reveal">
+          <p class="demo-desc">רוצה לראות איך זה עובד באמת?<br><br>בדף הזה מחכה לך הסוכן שלנו – אפשר פשוט להתחיל לדבר איתו, לשאול שאלות, לבדוק איך הוא מגיב ללקוחות, ואפילו להתנסות בתהליך מלא. תוך כדי השיחה, תוכל גם לקבוע איתנו פגישת ייעוץ בזמן שנוח לך – בדיוק כמו שהסוכן יעשה עבור העסק שלך.</p>
+          <a href="#lead" class="btn-primary" style="align-self:flex-start">מעבר להשארת פרטים באופן ידני</a>
+        </div>
+        <div class="wa-phone demo-phone reveal">
+          <div class="wa-statusbar"><span id="demo-time">12:00</span><span>📶 🔋</span></div>
+          <div class="wa-header">
+            <span class="wa-back">‹</span>
+            <div class="wa-av-sm">P</div>
+            <div class="wa-hdr-info">
+              <div class="wa-nm">pini – נציג הדגמה</div>
+              <div class="wa-sub" id="demo-sub">מחובר</div>
+            </div>
+            <div class="wa-hdr-icons">📞 ⋮</div>
+          </div>
+          <div class="wa-body" id="demo-msgs"></div>
+          <div class="wa-inputbar demo-inputbar">
+            <input id="demo-input" class="demo-inp" placeholder="הודעה..." onkeydown="if(event.key==='Enter')demoSend()">
+            <button id="demo-send" class="demo-send" onclick="demoSend()">➤</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEATURES -->
+    <div class="section" id="features">
+      <div class="section-head reveal">
+        <div class="eyebrow"><span class="dot"></span> למה pini</div>
+        <h2 class="stitle">היתרון <span class="acc">שלנו</span></h2>
+      </div>
+      <div class="features-grid">
+        <div class="feat reveal" onclick="toggleFeat(this)">
+          <div class="feat-icon"><img src="../src/icons/advantageClock.png" alt="זמינות"></div>
+          <div class="feat-header">
+            <h3>זמינות 24/7 — גם כשהעסק סגור</h3>
+            <span class="feat-arrow">+</span>
+          </div>
+          <p>לקוחות לא מחכים לשעות הפעילות שלך. הם שולחים הודעה ב-23:00 אחרי שהילדים נרדמו, בשבת בבוקר תוך כדי קפה, או בנסיעה לעבודה ב-7 בבוקר — וברגע שלא מקבלים מענה תוך זמן קצר, הם פונים למתחרה הבא ברשימה. הסוכן עונה בכל שעה, כל יום בשנה, בלי הפסקות ובלי חופשות. אתה מתעורר בבוקר ומגלה תורים חדשים שנקבעו, הזמנות שאושרו ולקוחות שכבר קיבלו תשובה — הכול קרה בזמן שישנת. במילים אחרות: העסק שלך ממשיך למכור גם כשאתה סגור.</p>
+        </div>
+        <div class="feat reveal" onclick="toggleFeat(this)">
+          <div class="feat-icon"><img src="../src/icons/advantagecalander.png" alt="תורים"></div>
+          <div class="feat-header">
+            <h3>תורים אוטומטיים — מוואטסאפ ישירות ל-Google Calendar</h3>
+            <span class="feat-arrow">+</span>
+          </div>
+          <p>הסוכן עובד ישירות מתוך וואטסאפ — הערוץ שכל לקוח בארץ כבר משתמש בו — ומסונכרן ליומן שלך. אתה מגדיר את שעות העבודה ואת ימי החופש, והסוכן מציע ללקוחות רק חלונות שמתאימים לך ומכניס את התור ישירות ליומן עם כל הפרטים. הוא גם שולח תזכורות אוטומטיות, מטפל בביטולים ומציע ללקוחות אחרים את החלונות שהתפנו — בלי שתפתח את הטלפון אפילו פעם אחת.</p>
+        </div>
+        <div class="feat reveal" onclick="toggleFeat(this)">
+          <div class="feat-icon"><img src="../src/icons/advantageMoney.png" alt="עלות"></div>
+          <div class="feat-header">
+            <h3>עלות של פחות מעובד אחד</h3>
+            <span class="feat-arrow">+</span>
+          </div>
+          <p>מזכירה במשרה חלקית עולה 6,000–8,000 ש"ח בחודש, ואליהם מתווספים סוציאליות, ימי מחלה, חופשות, הפסקות, וחפיפה כשהיא עוזבת — סך הכול עלות שעסק קטן בקושי יכול להרשות לעצמו. הסוכן עובד 24/7 בעלות חודשית קבועה ונמוכה משמעותית, בלי תלוש שכר, בלי תחלופה ובלי דרישות העלאה. הוא לא חולה, לא שוכח, לא מאחר ולא לוקח את הסוף-שבוע חופש לפני החג — בדיוק כשאתה הכי צריך אותו.</p>
+        </div>
+        <div class="feat reveal" onclick="toggleFeat(this)">
+          <div class="feat-icon"><img src="../src/icons/advantagebrain.png" alt="הסוכן מכיר"></div>
+          <div class="feat-header">
+            <h3>הסוכן מכיר את העסק שלך כמוך</h3>
+            <span class="feat-arrow">+</span>
+          </div>
+          <p>הסוכן לא עונה תשובות גנריות — הוא יודע את המחירון שלך, את השירותים שאתה נותן, את המדיניות שלך (ביטולים, חניה, כשרות, אלרגנים, מותגים שאתה עובד איתם). אתה מעלה פעם אחת את כל המידע שלקוחות שואלים עליו, והסוכן עונה מכאן והלאה כמו עובד ותיק שמכיר את העסק שנים. הלקוחות לא מרגישים שהם מדברים עם רובוט — הם מקבלים שירות אישי ומקצועי, מדויק לעסק שלך.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="section" id="faq">
+      <div class="section-head reveal">
+        <div class="eyebrow"><span class="dot"></span> שאלות נפוצות</div>
+        <h2 class="stitle">יש שאלות?<br>יש לנו <span class="acc">תשובות</span></h2>
+      </div>
+      <div class="faq-wrap">
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this.parentElement)">כמה זה עולה?<span class="faq-icon">+</span></div>
+          <div class="faq-a">המחיר מותאם לגודל העסק ולכמות הפניות, ומתחיל בסכום שנמוך משמעותית מעלות של עובד במשרה חלקית. אנחנו מציעים שיחת ייעוץ ללא עלות שבה נבין את הצרכים שלך וניתן הצעת מחיר מדויקת.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this.parentElement)">כמה זמן לוקח להקים את הסוכן?<span class="faq-icon">+</span></div>
+          <div class="faq-a">ההקמה לוקחת בדרך כלל בין שלושה לארבעה ימים. אתה מעביר לנו את המידע הבסיסי על העסק (מחירון, שירותים, שעות, מדיניות), ואנחנו דואגים לכל השאר — חיבור לוואטסאפ, סנכרון ליומן, ואימון הסוכן על העסק שלך.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this.parentElement)">אני לא מבין בטכנולוגיה — אני יכול להפעיל את זה?<span class="faq-icon">+</span></div>
+          <div class="faq-a">בהחלט. אתה לא צריך לדעת קוד, להתקין שום דבר במחשב, או להבין איך מערכות עובדות. אנחנו מקימים הכול בשבילך, ואתה רק נותן את המידע על העסק ומאשר את הניסוחים.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this.parentElement)">האם הוא עובד עם מספר הוואטסאפ שכבר יש לי?<span class="faq-icon">+</span></div>
+          <div class="faq-a">כן. אנחנו מחברים את הסוכן ישירות למספר הוואטסאפ העסקי שלך, כך שהלקוחות ממשיכים לפנות לאותו מספר שהם מכירים — בלי לבקש מהם לעבור לערוץ חדש.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this.parentElement)">איך אני יודע מה הסוכן עונה ללקוחות?<span class="faq-icon">+</span></div>
+          <div class="faq-a">אתה מקבל גישה ללוח בקרה שבו אפשר לראות את כל השיחות, התורים שנקבעו והפניות שהסוכן טיפל בהן. אתה תמיד שקוף לכל מה שקורה, ויכול להתערב בכל רגע.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this.parentElement)">מה אם הלקוח רוצה לדבר איתי אישית ולא עם בוט?<span class="faq-icon">+</span></div>
+          <div class="faq-a">הסוכן מזהה כשלקוח מבקש לדבר עם בן אדם, ומעביר אליך את השיחה אוטומטית. בנוסף, אתה תמיד יכול "להיכנס" לשיחה באמצע ולהמשיך אותה בעצמך — הסוכן לא מנסה להחליף אותך, הוא חוסך לך זמן.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this.parentElement)">המחירון והשירותים שלי משתנים — איך זה מתעדכן?<span class="faq-icon">+</span></div>
+          <div class="faq-a">עדכון המידע פשוט: שולח לנו הודעה עם השינוי, או מעדכן ישירות בפאנל הניהול. השינויים נכנסים לתוקף תוך דקות, כך שהסוכן תמיד עונה לפי המידע העדכני ביותר.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEAD -->
+    <div class="section" id="lead">
+      <div class="lead-box reveal">
+        <h2 class="lead-title">רוצה <span style="color:#fde68a">לדעת יותר?</span></h2>
+        <p class="lead-sub">השאר פרטים ונחזור אליך תוך 24 שעות</p>
+        <form class="lead-form" onsubmit="submitLead(event)">
+          <input class="lead-inp" type="text" placeholder="שם מלא" required id="l-name">
+          <input class="lead-inp" type="tel" placeholder="טלפון" required id="l-phone">
+          <select class="lead-sel" required id="l-type">
+            <option value="" disabled selected>סוג העסק</option>
+            <option>קצביה</option><option>חנות דגים</option><option>ירקן</option>
+            <option>מאפייה</option><option>מכולת</option><option>מספרה</option><option>אחר</option>
+          </select>
+          <button type="submit" class="lead-btn">שלח →</button>
+        </form>
+        <div class="lead-ok" id="lead-ok">✅ קיבלנו! נחזור אליך תוך 24 שעות.</div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer-row">
+      <div class="logo">
+        <div class="logo-mark">P</div>
+        pini
+      </div>
+      <div class="links">
+        <a href="#">פרטיות</a>
+        <a href="#">תנאי שימוש</a>
+        <a href="#lead">צור קשר</a>
+      </div>
+    </div>
+    <div class="footer-copy">© 2026 pini – הצ'אטבוט שעובד בשבילך</div>
+
+  </div>
+</div>
+
+<script>
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: .1 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+function animateCounter(el) {
+  const target = parseInt(el.dataset.count);
+  const suffix = el.dataset.suffix || '';
+  let start = null;
+  function step(ts) {
+    if (!start) start = ts;
+    const p = Math.min((ts - start) / 1800, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.floor(ease * target) + suffix;
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+const co = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) { e.target.querySelectorAll('[data-count]').forEach(animateCounter); co.unobserve(e.target); }});
+}, { threshold: .3 });
+document.querySelectorAll('.proof').forEach(el => co.observe(el));
+
+const CONVOS = {
+  barber: { msgs: [
+    {t:'usr', txt:'שלום, יש תורים פנויים מחר אחה"צ?', time:'21:03'},
+    {t:'bot', txt:'שלום! 😊 מחר פנוי:\n• 15:00\n• 16:30\n• 18:00\nאיזה שירות?', time:'21:03'},
+    {t:'usr', txt:'תספורת + עיצוב זקן', time:'21:04'},
+    {t:'bot', txt:'תספורת + עיצוב זקן — 120₪ ✂️\nאיזה שעה מתאימה?', time:'21:04'},
+    {t:'usr', txt:'16:30 בבקשה', time:'21:04'},
+    {t:'bot', txt:'✅ נרשמת! מחר 16:30\n🔔 שלחתי עדכון מיידי לבעל המספרה', time:'21:05'},
+  ]},
+  cakes: { msgs: [
+    {t:'usr', txt:'היי, אני רוצה עוגת יום הולדת ל-20 איש בעיצוב וינטג׳ 🎂', time:'11:30'},
+    {t:'bot', txt:'איזה יופי! 🌸 כמה קומות ולאיזה תאריך?', time:'11:30'},
+    {t:'usr', txt:'2 קומות, שישי הבא 14 בחודש', time:'11:31'},
+    {t:'bot', txt:'מעולה, רשמתי הכול 📋\nשם ולאיזה שעה צריך את העוגה?', time:'11:31'},
+    {t:'usr', txt:'דנה, לצהריים בערך 13:00', time:'11:32'},
+    {t:'bot', txt:'תודה דנה! 😊\nשלחתי את כל הפרטים למיכל לאישור — היא תחזור אליך בהקדם עם אישור סופי ומחיר מדויק ✅', time:'11:32'},
+  ]},
+  butcher: { msgs: [
+    {t:'usr', txt:'צריך בשר למנגל לשישה אנשים, תקציב 600₪', time:'14:32'},
+    {t:'bot', txt:'בשמחה! 🔥 הנה הצעה לפי המחירון:\n• אנטריקוט 1.5ק"ג – 230₪\n• שיפודי עוף 12יח – 110₪\n• קבב 600ג – 95₪\nסה"כ: 435₪\n\nנשאר תקציב — מוסיף פיתות וירקות לצלייה ב-50₪?', time:'14:32'},
+    {t:'usr', txt:'כן! ולאסוף היום', time:'14:33'},
+    {t:'bot', txt:'16:00 או 18:00?', time:'14:33'},
+    {t:'usr', txt:'16:00', time:'14:34'},
+    {t:'bot', txt:'✅ רשמתי! איסוף היום 16:00\n🔔 שלחתי לך ולבעל הקצביה עדכון עם פרטי ההזמנה', time:'14:34'},
+  ]},
+  studio: { msgs: [
+    {t:'usr', txt:'ראיתי על הסדנה החדשה שפרסמתם — יש מקום?', time:'19:47'},
+    {t:'bot', txt:'שמחים לשמוע! 🎨\nשאלה קצרה — מה רמת הניסיון שלך?', time:'19:47'},
+    {t:'usr', txt:'מתחיל, פעם ראשונה', time:'19:48'},
+    {t:'bot', txt:'מושלם, הסדנה מתאימה בדיוק 👌\nמה עדיף לך — שבת בוקר או ערב חול?', time:'19:48'},
+    {t:'usr', txt:'שבת בוקר', time:'19:49'},
+    {t:'bot', txt:'✅ קבעתי לך מקום בסדנה — שבת 10:00\n📅 הזמנה נכנסה ליומן הסטודיו', time:'19:49'},
+  ]}
+};
+
+let convoTimers = [], activeConvo = null;
+function clearConvoTimers() { convoTimers.forEach(clearTimeout); convoTimers = []; }
+
+function playConvo(name) {
+  activeConvo = name;
+  clearConvoTimers();
+  const body = document.getElementById('wa-body-' + name);
+  const sub  = document.getElementById('wa-sub-' + name);
+  if (!body) return;
+  body.innerHTML = '';
+  if (sub) sub.textContent = 'מחובר';
+  stepMsg(name, 0, body, sub);
+}
+
+function stepMsg(name, i, body, sub) {
+  if (activeConvo !== name) return;
+  const msgs = CONVOS[name].msgs;
+  if (i >= msgs.length) {
+    convoTimers.push(setTimeout(() => {
+      if (activeConvo !== name) return;
+      body.innerHTML = '';
+      convoTimers.push(setTimeout(() => stepMsg(name, 0, body, sub), 400));
+    }, 4000));
+    return;
+  }
+  const msg = msgs[i];
+  if (msg.t === 'bot') {
+    if (sub) sub.textContent = 'מקליד...';
+    const typEl = document.createElement('div');
+    typEl.className = 'wa-typing-row show';
+    typEl.innerHTML = '<span></span><span></span><span></span>';
+    body.appendChild(typEl);
+    body.scrollTop = body.scrollHeight;
+    const dur = 850 + Math.min(msg.txt.length * 8, 900);
+    convoTimers.push(setTimeout(() => {
+      if (activeConvo !== name) return;
+      typEl.remove();
+      if (sub) sub.textContent = 'מחובר';
+      appendWaMsg(body, msg);
+      convoTimers.push(setTimeout(() => stepMsg(name, i + 1, body, sub), 650));
+    }, dur));
+  } else {
+    appendWaMsg(body, msg);
+    convoTimers.push(setTimeout(() => stepMsg(name, i + 1, body, sub), 900));
+  }
+}
+
+function appendWaMsg(body, msg) {
+  const el = document.createElement('div');
+  el.className = 'wa-msg ' + msg.t;
+  const ticks = msg.t === 'usr' ? '<span class="wa-ticks">✓✓</span>' : '';
+  el.innerHTML = '<div class="wa-bubble">' + msg.txt.replace(/\n/g,'<br>') + '</div>'
+    + '<div class="wa-meta">' + ticks + '<span>' + msg.time + '</span></div>';
+  body.appendChild(el);
+  body.scrollTop = body.scrollHeight;
+  requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('in')));
+}
+
+function showConvo(name, btn) {
+  document.querySelectorAll('.convo-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('convo-' + name).classList.add('active');
+  btn.classList.add('active');
+  document.querySelectorAll('#convo-' + name + ' .reveal').forEach(el => {
+    el.classList.remove('visible');
+    requestAnimationFrame(() => el.classList.add('visible'));
+  });
+  playConvo(name);
+}
+
+// Auto-start when conversations section enters viewport
+(function() {
+  const sec = document.getElementById('conversations');
+  if (!sec) return;
+  const io = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting) { playConvo('barber'); io.disconnect(); } });
+  }, { threshold: 0.25 });
+  io.observe(sec);
+})();
+
+function toggleFaq(el) {
+  const wasOpen = el.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) el.classList.add('open');
+}
+
+function toggleFeat(el) {
+  const wasOpen = el.classList.contains('open');
+  document.querySelectorAll('.feat').forEach(f => f.classList.remove('open'));
+  if (!wasOpen) el.classList.add('open');
+}
+
+async function submitLead(e) {
+  e.preventDefault();
+  const name = document.getElementById('l-name').value.trim();
+  const phone = document.getElementById('l-phone').value.trim();
+  const btn = e.target.querySelector('.lead-btn');
+  btn.disabled = true;
+  btn.textContent = 'שולח...';
+  try {
+    await fetch('/api/lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, phone })
+    });
+  } catch (_) {}
+  document.querySelector('.lead-form').style.display = 'none';
+  document.getElementById('lead-ok').style.display = 'block';
+}
+
+// Set live clock for demo phone
+(function() {
+  function tick() {
+    const el = document.getElementById('demo-time');
+    if (el) el.textContent = new Date().toLocaleTimeString('he-IL', {hour:'2-digit', minute:'2-digit'});
+  }
+  tick();
+  setInterval(tick, 30000);
+})();
+
+let demoHistory = [];
+
+// Show greeting when demo section enters viewport
+(function() {
+  const sec = document.getElementById('chat-demo');
+  if (!sec) return;
+  const io = new IntersectionObserver(es => {
+    es.forEach(e => {
+      if (e.isIntersecting) {
+        setTimeout(() => {
+          addDemoMsg('bot', 'שלום! 👋 אני pini.\nשאל אותי כל שאלה על המערכת, או פשוט תגיד שאתה רוצה לקבוע פגישה 😊');
+        }, 500);
+        io.disconnect();
+      }
+    });
+  }, { threshold: 0.3 });
+  io.observe(sec);
+})();
+
+async function demoSend() {
+  const inp = document.getElementById('demo-input');
+  const btn = document.getElementById('demo-send');
+  const sub = document.getElementById('demo-sub');
+  const body = document.getElementById('demo-msgs');
+  const txt = inp.value.trim();
+  if (!txt || btn.disabled) return;
+  inp.value = '';
+  addDemoMsg('usr', txt);
+  demoHistory.push({ role: 'user', content: txt });
+  btn.disabled = true;
+  if (sub) sub.textContent = 'מקליד...';
+  const typEl = document.createElement('div');
+  typEl.className = 'wa-typing-row show';
+  typEl.innerHTML = '<span></span><span></span><span></span>';
+  body.appendChild(typEl);
+  body.scrollTop = body.scrollHeight;
+  try {
+    const res = await fetch('/api/landing/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: demoHistory })
+    });
+    const data = await res.json();
+    const reply = data.response || 'מצטער, קרתה תקלה. אנא נסה שוב.';
+    demoHistory.push({ role: 'assistant', content: reply });
+    typEl.remove();
+    if (sub) sub.textContent = 'מחובר';
+    addDemoMsg('bot', reply);
+  } catch {
+    typEl.remove();
+    if (sub) sub.textContent = 'מחובר';
+    addDemoMsg('bot', 'מצטער, קרתה תקלה. אנא נסה שוב.');
+  }
+  btn.disabled = false;
+  inp.focus();
+}
+
+function addDemoMsg(type, text) {
+  const body = document.getElementById('demo-msgs');
+  if (!body) return;
+  const time = new Date().toLocaleTimeString('he-IL', {hour:'2-digit', minute:'2-digit'});
+  const ticks = type === 'usr' ? '<span class="wa-ticks">✓✓</span>' : '';
+  const el = document.createElement('div');
+  el.className = 'wa-msg ' + (type === 'bot' ? 'bot' : 'usr');
+  el.innerHTML = '<div class="wa-bubble">' + text.replace(/\n/g,'<br>') + '</div>'
+    + '<div class="wa-meta">' + ticks + '<span>' + time + '</span></div>';
+  body.appendChild(el);
+  body.scrollTop = body.scrollHeight;
+  requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('in')));
+}
+</script>
+</body>
+</html>

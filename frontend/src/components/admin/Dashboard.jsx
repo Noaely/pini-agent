@@ -14,15 +14,15 @@ function Trend({ value, inverted = false }) {
   const isUp = value > 0
   const isGood = inverted ? !isUp : isUp
   return (
-    <p className={`text-xs mt-1 ${isGood ? 'text-[#22C55E]' : 'text-[#EF4444]'}`}>
+    <p className={`text-xs mt-1 ${isGood ? 'text-[#16a34a]' : 'text-[#EF4444]'}`}>
       {isUp ? '↑' : '↓'} {Math.abs(value)}% {isUp ? 'יותר' : 'פחות'} מחודש שעבר
     </p>
   )
 }
 
 const PIE_GRADIENT_PAIRS = [
-  ['#86EFAC', '#22C55E'],
-  ['#C4B5FD', '#8B5CF6'],
+  ['#86EFAC', '#16a34a'],
+  ['#93C5FD', '#1d4ed8'],
   ['#FCA5A5', '#EF4444'],
   ['#FDE68A', '#F59E0B'],
   ['#67E8F9', '#06B6D4'],
@@ -84,6 +84,11 @@ function formatDate(iso) {
   return new Date(iso).toLocaleDateString('he-IL', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
 }
 
+const CARD = 'bg-[#e8f3ff] border border-[#e2e7ee] rounded-2xl p-5 shadow-[0_4px_24px_rgba(29,78,216,0.08)]'
+const CARD_LG = 'bg-[#e8f3ff] border border-[#e2e7ee] rounded-2xl p-6 shadow-[0_4px_24px_rgba(29,78,216,0.08)]'
+const TEXT_PRIMARY = 'text-[#0d1b2e]'
+const TEXT_SECONDARY = 'text-[#5a6678]'
+
 export default function Dashboard() {
   const [analytics, setAnalytics] = useState(getDemoDashboardData())
   const [orders, setOrders] = useState(DEMO_ORDERS)
@@ -127,48 +132,48 @@ export default function Dashboard() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-5 mb-6">
-        <div className="bg-[#1A1835] border border-[#2D2B52] rounded-2xl p-5 shadow-[0_4px_24px_rgba(124,92,191,0.12)]">
+        <div className={CARD}>
           <div className="flex items-center justify-between mb-3">
-            <span className="text-[#9B9BBB] text-sm">סה״כ הכנסות</span>
+            <span className={`${TEXT_SECONDARY} text-sm`}>סה״כ הכנסות</span>
             <img src={iconMoney} alt="" className="w-10 h-10 object-contain" />
           </div>
-          <p className="text-4xl font-bold text-white text-center">₪{kpi.revenue.toLocaleString('he-IL')}</p>
-          <p className="text-xs text-[#22C55E] mt-2 text-center">מכל הזמנות הצ׳אט</p>
+          <p className={`text-4xl font-bold ${TEXT_PRIMARY} text-center`}>₪{kpi.revenue.toLocaleString('he-IL')}</p>
+          <p className="text-xs text-[#16a34a] mt-2 text-center">מכל הזמנות הצ׳אט</p>
         </div>
 
-        <div className="bg-[#1A1835] border border-[#2D2B52] rounded-2xl p-5 shadow-[0_4px_24px_rgba(124,92,191,0.12)]">
+        <div className={CARD}>
           <div className="flex items-center justify-between mb-3">
-            <span className="text-[#9B9BBB] text-sm">שיעור המרה</span>
+            <span className={`${TEXT_SECONDARY} text-sm`}>שיעור המרה</span>
             <img src={iconConversion} alt="" className="w-10 h-10 object-contain" />
           </div>
-          <p className="text-4xl font-bold text-white text-center">{kpi.conversionRate ?? '88'}%</p>
+          <p className={`text-4xl font-bold ${TEXT_PRIMARY} text-center`}>{kpi.conversionRate ?? '88'}%</p>
           <div className="text-center"><Trend value={kpi.trendConversionRate} /></div>
         </div>
 
-        <div className="bg-[#1A1835] border border-[#2D2B52] rounded-2xl p-5 shadow-[0_4px_24px_rgba(124,92,191,0.12)]">
+        <div className={CARD}>
           <div className="flex items-center justify-between mb-3">
-            <span className="text-[#9B9BBB] text-sm">הזמנות שנסגרו</span>
+            <span className={`${TEXT_SECONDARY} text-sm`}>הזמנות שנסגרו</span>
             <img src={iconOrders} alt="" className="w-10 h-10 object-contain" />
           </div>
-          <p className="text-4xl font-bold text-white text-center">{kpi.orders}</p>
+          <p className={`text-4xl font-bold ${TEXT_PRIMARY} text-center`}>{kpi.orders}</p>
           <div className="text-center"><Trend value={kpi.trendOrders} /></div>
         </div>
 
-        <div className="bg-[#1A1835] border border-[#2D2B52] rounded-2xl p-5 shadow-[0_4px_24px_rgba(124,92,191,0.12)]">
+        <div className={CARD}>
           <div className="flex items-center justify-between mb-3">
-            <span className="text-[#9B9BBB] text-sm">לקוחות חדשים</span>
+            <span className={`${TEXT_SECONDARY} text-sm`}>לקוחות חדשים</span>
             <img src={iconCustomers} alt="" className="w-10 h-10 object-contain" />
           </div>
-          <p className="text-4xl font-bold text-white text-center">{kpi.newCustomers ?? '34'}</p>
+          <p className={`text-4xl font-bold ${TEXT_PRIMARY} text-center`}>{kpi.newCustomers ?? '34'}</p>
           <div className="text-center"><Trend value={kpi.trendNewCustomers} /></div>
         </div>
 
-        <div className="bg-[#1A1835] border border-[#2D2B52] rounded-2xl p-5 shadow-[0_4px_24px_rgba(124,92,191,0.12)]">
+        <div className={CARD}>
           <div className="flex items-center justify-between mb-3">
-            <span className="text-[#9B9BBB] text-sm">הזמנות שננטשו</span>
+            <span className={`${TEXT_SECONDARY} text-sm`}>הזמנות שננטשו</span>
             <img src={iconAbandoned} alt="" className="w-10 h-10 object-contain" />
           </div>
-          <p className="text-4xl font-bold text-white text-center">{kpi.abandoned ?? 10}</p>
+          <p className={`text-4xl font-bold ${TEXT_PRIMARY} text-center`}>{kpi.abandoned ?? 10}</p>
           <div className="text-center"><Trend value={kpi.trendAbandoned} inverted /></div>
         </div>
       </div>
@@ -176,12 +181,12 @@ export default function Dashboard() {
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         {/* Revenue Area Chart */}
-        <div className="bg-[#1A1835] border border-[#2D2B52] rounded-2xl p-6 shadow-[0_4px_24px_rgba(124,92,191,0.12)]">
+        <div className={CARD_LG}>
           <div className="flex items-start justify-between mb-4">
-            <h3 className="text-white text-lg font-semibold">הכנסות בחודש האחרון</h3>
+            <h3 className={`${TEXT_PRIMARY} text-lg font-semibold`}>הכנסות בחודש האחרון</h3>
             <div className="text-left">
-              <p className="text-[#9B9BBB] text-xs mb-0.5">סה״כ החודש</p>
-              <p className="text-white text-xl font-bold">
+              <p className={`${TEXT_SECONDARY} text-xs mb-0.5`}>סה״כ החודש</p>
+              <p className={`${TEXT_PRIMARY} text-xl font-bold`}>
                 ₪{revenueByDate.reduce((s, d) => s + (d.amount || 0), 0).toLocaleString('he-IL')}
               </p>
             </div>
@@ -190,34 +195,34 @@ export default function Dashboard() {
             <AreaChart data={revenueByDate}>
               <defs>
                 <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#7C5CBF" stopOpacity={0.8}/>
-                  <stop offset="95%" stopColor="#00D4D4" stopOpacity={0}/>
+                  <stop offset="5%" stopColor="#1e3a8a" stopOpacity={0.5}/>
+                  <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#2D2B52" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#e2e7ee" />
               <XAxis
                 dataKey="date"
-                tick={{ fill: '#9B9BBB', fontSize: 12 }}
+                tick={{ fill: '#5a6678', fontSize: 12 }}
                 axisLine={false}
               />
               <YAxis
-                tick={{ fill: '#9B9BBB', fontSize: 12 }}
+                tick={{ fill: '#5a6678', fontSize: 12 }}
                 axisLine={false}
                 tickFormatter={(value) => `₪${value}`}
               />
               <Tooltip
                 contentStyle={{
-                  background: '#252246',
-                  border: '1px solid #2D2B52',
+                  background: '#e8f3ff',
+                  border: '1px solid #e2e7ee',
                   borderRadius: 12,
-                  color: '#fff'
+                  color: '#0d1b2e'
                 }}
                 formatter={(value) => [`₪${value}`, 'הכנסות']}
               />
               <Area
                 type="monotone"
                 dataKey="amount"
-                stroke="#00D4D4"
+                stroke="#1d4ed8"
                 strokeWidth={2}
                 fillOpacity={1}
                 fill="url(#colorAmount)"
@@ -227,10 +232,10 @@ export default function Dashboard() {
         </div>
 
         {/* Sales by Category Pie Chart */}
-        <div className="bg-[#1A1835] border border-[#2D2B52] rounded-2xl p-6 shadow-[0_4px_24px_rgba(124,92,191,0.12)]">
+        <div className={CARD_LG}>
           <div className="flex items-center gap-2 mb-4">
             <img src={iconPieChart} alt="" className="w-8 h-8 object-contain" />
-            <h3 className="text-white text-lg font-semibold">פילוח מכירות לפי קטגוריה</h3>
+            <h3 className={`${TEXT_PRIMARY} text-lg font-semibold`}>פילוח מכירות לפי קטגוריה</h3>
           </div>
           {(() => {
             const catTotal = salesByCategory.reduce((s, e) => s + e.value, 0)
@@ -254,7 +259,7 @@ export default function Dashboard() {
                         innerRadius={98}
                         outerRadius={108}
                         dataKey="value"
-                        stroke="#1A1835"
+                        stroke="#e8f3ff"
                         strokeWidth={3}
                       >
                         {salesByCategory.map((_, index) => (
@@ -262,25 +267,25 @@ export default function Dashboard() {
                         ))}
                       </Pie>
                       <Tooltip
-                        contentStyle={{ background: '#252246', border: '1px solid #2D2B52', borderRadius: 12, color: '#fff' }}
+                        contentStyle={{ background: '#e8f3ff', border: '1px solid #e2e7ee', borderRadius: 12, color: '#0d1b2e' }}
                         formatter={(value) => [`₪${value.toLocaleString('he-IL')}`, 'סה״כ מכירות']}
                       />
                     </PieChart>
                   </ResponsiveContainer>
                   <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                    <p className="text-[#9B9BBB] text-xs mb-0.5">סה״כ מכירות</p>
-                    <p className="text-white text-2xl font-bold">₪{catTotal.toLocaleString('he-IL')}</p>
+                    <p className={`${TEXT_SECONDARY} text-xs mb-0.5`}>סה״כ מכירות</p>
+                    <p className={`${TEXT_PRIMARY} text-2xl font-bold`}>₪{catTotal.toLocaleString('he-IL')}</p>
                   </div>
                 </div>
-                <div className="flex flex-col flex-1 divide-y divide-[#2D2B52]">
+                <div className="flex flex-col flex-1 divide-y divide-[#e2e7ee]">
                   {salesByCategory.map((entry, index) => {
                     const pct = catTotal > 0 ? ((entry.value / catTotal) * 100).toFixed(0) : 0
                     const dotColor = PIE_GRADIENT_PAIRS[index % PIE_GRADIENT_PAIRS.length][1]
                     return (
                       <div key={index} className="flex items-center gap-2.5 py-2.5">
                         <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: dotColor }} />
-                        <span className="text-[#9B9BBB] text-sm flex-1">{entry.name}</span>
-                        <span className="text-white text-sm font-semibold">{pct}%</span>
+                        <span className={`${TEXT_SECONDARY} text-sm flex-1`}>{entry.name}</span>
+                        <span className={`${TEXT_PRIMARY} text-sm font-semibold`}>{pct}%</span>
                       </div>
                     )
                   })}
@@ -292,36 +297,36 @@ export default function Dashboard() {
       </div>
 
       {/* Customer Table */}
-      <div className="bg-[#1A1835] border border-[#2D2B52] rounded-2xl p-6 shadow-[0_4px_24px_rgba(124,92,191,0.12)]">
+      <div className={CARD_LG}>
         <div className="flex items-center gap-2 mb-4">
           <img src={iconCustomersTable} alt="" className="w-10 h-10 object-contain" />
-          <h3 className="text-white text-xl font-semibold">טבלת לקוחות</h3>
+          <h3 className={`${TEXT_PRIMARY} text-xl font-semibold`}>טבלת לקוחות</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-right">
             <thead>
-              <tr className="border-b border-[#2D2B52]">
-                <th className="pb-3 text-[#9B9BBB] font-medium text-sm">שם</th>
-                <th className="pb-3 text-[#9B9BBB] font-medium text-sm">מספר טלפון</th>
-                <th className="pb-3 text-[#9B9BBB] font-medium text-sm">סטטוס</th>
+              <tr className="border-b border-[#e2e7ee]">
+                <th className={`pb-3 ${TEXT_SECONDARY} font-medium text-sm`}>שם</th>
+                <th className={`pb-3 ${TEXT_SECONDARY} font-medium text-sm`}>מספר טלפון</th>
+                <th className={`pb-3 ${TEXT_SECONDARY} font-medium text-sm`}>סטטוס</th>
               </tr>
             </thead>
             <tbody>
               {customerTable.map((customer, idx) => (
-                <tr key={idx} className="border-b border-[#2D2B52] hover:bg-[#252246] transition-all">
-                  <td className="py-3 text-white">{customer.name}</td>
-                  <td className="py-3 text-[#9B9BBB]">{customer.phone}</td>
+                <tr key={idx} className="border-b border-[#e2e7ee] hover:bg-[#d6ebff] transition-all">
+                  <td className={`py-3 ${TEXT_PRIMARY}`}>{customer.name}</td>
+                  <td className={`py-3 ${TEXT_SECONDARY}`}>{customer.phone}</td>
                   <td className="py-3">
                     <span className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs ${
-                      customer.status === 'הזמנה נסגרה' ? 'bg-[#22C55E]/10 text-[#22C55E]' :
-                      customer.status === 'מחכה לתשובה' ? 'bg-[#F59E0B]/10 text-[#F59E0B]' :
-                      customer.status === 'הזמנה ננטשה' ? 'bg-[#7C5CBF]/10 text-[#9B7EE8]' :
+                      customer.status === 'הזמנה נסגרה' ? 'bg-[#16a34a]/10 text-[#16a34a]' :
+                      customer.status === 'מחכה לתשובה' ? 'bg-[#F59E0B]/10 text-[#b45309]' :
+                      customer.status === 'הזמנה ננטשה' ? 'bg-[#1d4ed8]/10 text-[#1d4ed8]' :
                       'bg-[#EF4444]/10 text-[#EF4444]'
                     }`}>
                       <span className="w-2 h-2 rounded-full" style={{
-                        background: customer.status === 'הזמנה נסגרה' ? '#22C55E' :
+                        background: customer.status === 'הזמנה נסגרה' ? '#16a34a' :
                                   customer.status === 'מחכה לתשובה' ? '#F59E0B' :
-                                  customer.status === 'הזמנה ננטשה' ? '#9B7EE8' : '#EF4444'
+                                  customer.status === 'הזמנה ננטשה' ? '#1d4ed8' : '#EF4444'
                       }} />
                       {customer.status}
                     </span>
@@ -334,40 +339,40 @@ export default function Dashboard() {
       </div>
 
       {/* Orders Table */}
-      <div className="bg-[#1A1835] border border-[#2D2B52] rounded-2xl p-6 shadow-[0_4px_24px_rgba(124,92,191,0.12)]">
+      <div className={`${CARD_LG} mt-6`}>
         <div className="flex items-center gap-2 mb-4">
           <img src={iconHistory} alt="" className="w-10 h-10 object-contain" />
-          <h3 className="text-white text-xl font-semibold">היסטוריית הזמנות</h3>
+          <h3 className={`${TEXT_PRIMARY} text-xl font-semibold`}>היסטוריית הזמנות</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-right">
             <thead>
-              <tr className="border-b border-[#2D2B52]">
-                <th className="pb-3 text-[#9B9BBB] font-medium text-sm">שם לקוח</th>
-                <th className="pb-3 text-[#9B9BBB] font-medium text-sm">טלפון</th>
-                <th className="pb-3 text-[#9B9BBB] font-medium text-sm">תאריך הזמנה</th>
-                <th className="pb-3 text-[#9B9BBB] font-medium text-sm">אופן קבלה</th>
-                <th className="pb-3 text-[#9B9BBB] font-medium text-sm">סכום</th>
+              <tr className="border-b border-[#e2e7ee]">
+                <th className={`pb-3 ${TEXT_SECONDARY} font-medium text-sm`}>שם לקוח</th>
+                <th className={`pb-3 ${TEXT_SECONDARY} font-medium text-sm`}>טלפון</th>
+                <th className={`pb-3 ${TEXT_SECONDARY} font-medium text-sm`}>תאריך הזמנה</th>
+                <th className={`pb-3 ${TEXT_SECONDARY} font-medium text-sm`}>אופן קבלה</th>
+                <th className={`pb-3 ${TEXT_SECONDARY} font-medium text-sm`}>סכום</th>
               </tr>
             </thead>
             <tbody>
               {orders.map((order, idx) => (
-                <tr key={idx} className="border-b border-[#2D2B52] hover:bg-[#252246] transition-all">
-                  <td className="py-3 text-white">{order.name}</td>
-                  <td className="py-3 text-[#9B9BBB]">{order.phone || '—'}</td>
-                  <td className="py-3 text-[#9B9BBB] text-sm">{formatDate(order.date)}</td>
+                <tr key={idx} className="border-b border-[#e2e7ee] hover:bg-[#d6ebff] transition-all">
+                  <td className={`py-3 ${TEXT_PRIMARY}`}>{order.name}</td>
+                  <td className={`py-3 ${TEXT_SECONDARY}`}>{order.phone || '—'}</td>
+                  <td className={`py-3 ${TEXT_SECONDARY} text-sm`}>{formatDate(order.date)}</td>
                   <td className="py-3">
                     {order.deliveryType === 'delivery' ? (
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs bg-[#06B6D4]/10 text-[#06B6D4]">
-                        <span className="w-2 h-2 rounded-full bg-[#06B6D4]" />נשלחה
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs bg-[#3b82f6]/10 text-[#1d4ed8]">
+                        <span className="w-2 h-2 rounded-full bg-[#3b82f6]" />נשלחה
                       </span>
                     ) : order.deliveryType === 'pickup' ? (
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs bg-[#22C55E]/10 text-[#22C55E]">
-                        <span className="w-2 h-2 rounded-full bg-[#22C55E]" />נאספה
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs bg-[#16a34a]/10 text-[#16a34a]">
+                        <span className="w-2 h-2 rounded-full bg-[#16a34a]" />נאספה
                       </span>
-                    ) : <span className="text-[#9B9BBB]">—</span>}
+                    ) : <span className={TEXT_SECONDARY}>—</span>}
                   </td>
-                  <td className="py-3 text-white font-medium">₪{order.amount.toLocaleString('he-IL')}</td>
+                  <td className={`py-3 ${TEXT_PRIMARY} font-medium`}>₪{order.amount.toLocaleString('he-IL')}</td>
                 </tr>
               ))}
             </tbody>
