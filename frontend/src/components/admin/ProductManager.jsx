@@ -33,12 +33,6 @@ export default function ProductManager() {
     setShowModal(true)
   }
 
-  function openEdit(p) {
-    setEditing(p)
-    setForm({ name: p.name, category: p.category || '', price: String(p.price), unit: p.unit || 'ק״ג' })
-    setShowModal(true)
-  }
-
   async function save() {
     if (!form.name.trim() || !form.price) return
     const body = { name: form.name, category: form.category, price: Number(form.price), unit: form.unit }
@@ -47,13 +41,6 @@ export default function ProductManager() {
     await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
     setShowModal(false)
     setToast({ message: editing ? 'המוצר עודכן' : 'המוצר נוסף', type: 'success' })
-    load()
-  }
-
-  async function remove(id, source) {
-    if (source !== 'custom') return
-    await fetch(`/api/admin/products/${id}`, { method: 'DELETE' })
-    setToast({ message: 'המוצר נמחק', type: 'success' })
     load()
   }
 
@@ -122,7 +109,6 @@ export default function ProductManager() {
                 <th className="pb-3 px-2 text-[#5a6678] font-semibold text-xs">מחיר</th>
                 <th className="pb-3 px-2 text-[#5a6678] font-semibold text-xs">יחידה</th>
                 <th className="pb-3 px-2 text-[#5a6678] font-semibold text-xs">מקור</th>
-                <th className="pb-3 px-2 text-[#5a6678] font-semibold text-xs w-[90px]">פעולות</th>
               </tr>
             </thead>
             <tbody>
@@ -153,27 +139,11 @@ export default function ProductManager() {
                       </span>
                     )}
                   </td>
-                  <td className="py-3 px-2">
-                    {p.source === 'custom' ? (
-                      <div className="flex gap-1">
-                        <button onClick={() => openEdit(p)} className="w-8 h-8 flex items-center justify-center rounded-lg bg-[#f4f7fb] border border-[#e2e7ee] text-[#5a6678] hover:bg-[#1d4ed8]/10 hover:text-[#1d4ed8] transition-colors">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" className="w-4 h-4"><path d="M12 20h9" /><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" /></svg>
-                        </button>
-                        <button onClick={() => remove(p.id, p.source)} className="w-8 h-8 flex items-center justify-center rounded-lg bg-[#f4f7fb] border border-[#e2e7ee] text-[#5a6678] hover:bg-[#e11d48]/10 hover:text-[#e11d48] transition-colors">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" className="w-4 h-4"><path d="M3 6h18" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /></svg>
-                        </button>
-                      </div>
-                    ) : (
-                      <button title="מוצרי סקרייפר נעולים לעריכה" className="w-8 h-8 flex items-center justify-center rounded-lg bg-[#f4f7fb] border border-[#e2e7ee] text-[#9eb3d4] cursor-default">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-4 h-4"><rect x="4" y="11" width="16" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></svg>
-                      </button>
-                    )}
-                  </td>
                 </tr>
               ))}
               {!filtered.length && (
                 <tr>
-                  <td colSpan="6">
+                  <td colSpan="5">
                     <div className="empty-state p-8">
                       <div className="empty-state-icon">🥩</div>
                       <div className="empty-state-text">לא נמצאו מוצרים – הרץ סנכרון או הוסף ידנית</div>
