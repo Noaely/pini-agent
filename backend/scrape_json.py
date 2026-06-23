@@ -58,7 +58,7 @@ def extract_products(html):
 
         # Decode unicode escapes
         try:
-            name = name.encode().decode('unicode_escape')
+            name = json.loads(f'"{name}"')
         except:
             pass
 
@@ -81,7 +81,7 @@ def extract_products(html):
 
         name = match.group(2)
         try:
-            name = name.encode().decode('unicode_escape')
+            name = json.loads(f'"{name}"')
         except:
             pass
 

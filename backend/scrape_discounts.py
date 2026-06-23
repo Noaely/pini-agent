@@ -37,7 +37,7 @@ def extract_products(html_content):
 
         # Decode unicode escapes
         try:
-            name = name.encode().decode('unicode_escape')
+            name = json.loads(f'"{name}"')
         except:
             pass
 
