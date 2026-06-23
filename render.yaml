@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: pini-agent-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: free
+    healthCheckPath: /api/store-info
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: GREEN_API_INSTANCE_ID
+        sync: false
+      - key: GREEN_API_TOKEN
+        sync: false
+      - key: LEAD_PHONE
+        sync: false

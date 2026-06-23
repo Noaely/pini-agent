@@ -525,7 +525,8 @@ let syncStatus = 'idle'
 
 app.post('/api/admin/sync', (req, res) => {
   syncStatus = 'running'
-  const cmd = `cd "${__dirname}" && /usr/bin/python3 scrape_json.py && /usr/bin/python3 scrape_discounts.py`
+  const python = process.env.PYTHON_BIN || 'python3'
+  const cmd = `cd "${__dirname}" && ${python} scrape_json.py && ${python} scrape_discounts.py`
 
   exec(cmd, (error, stdout, stderr) => {
     const logData = readJSON('sync_log.json', { log: [] })
