@@ -26,22 +26,6 @@ function formatDate(iso) {
   })
 }
 
-function DeliveryBadge({ type }) {
-  if (type === 'delivery')
-    return (
-      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs bg-[#3b82f6]/10 text-[#1d4ed8]">
-        <span className="w-2 h-2 rounded-full bg-[#3b82f6]" />נשלחה
-      </span>
-    )
-  if (type === 'pickup')
-    return (
-      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs bg-[#16a34a]/10 text-[#16a34a]">
-        <span className="w-2 h-2 rounded-full bg-[#16a34a]" />נאספה
-      </span>
-    )
-  return <span className="text-[#5a6678] text-sm">—</span>
-}
-
 export default function OrderHistory() {
   const [orders, setOrders]           = useState(DEMO_ORDERS)
   const [loading, setLoading]         = useState(true)
@@ -104,7 +88,6 @@ export default function OrderHistory() {
                     <th className="pb-3 text-[#5a6678] font-medium text-sm">שם לקוח</th>
                     <th className="pb-3 text-[#5a6678] font-medium text-sm">טלפון</th>
                     <th className="pb-3 text-[#5a6678] font-medium text-sm">תאריך הזמנה</th>
-                    <th className="pb-3 text-[#5a6678] font-medium text-sm">אופן קבלה</th>
                     <th className="pb-3 text-[#5a6678] font-medium text-sm">סכום</th>
                   </tr>
                 </thead>
@@ -114,13 +97,12 @@ export default function OrderHistory() {
                       <td className="py-3 text-[#0d1b2e]">{order.name}</td>
                       <td className="py-3 text-[#5a6678]">{order.phone || '—'}</td>
                       <td className="py-3 text-[#5a6678] text-sm">{formatDate(order.date)}</td>
-                      <td className="py-3"><DeliveryBadge type={order.deliveryType} /></td>
                       <td className="py-3 text-[#0d1b2e] font-medium">₪{order.amount.toLocaleString('he-IL')}</td>
                     </tr>
                   ))}
                   {filtered.length === 0 && (
                     <tr>
-                      <td colSpan={5} className="py-8 text-center text-[#5a6678]">אין הזמנות בסינון זה</td>
+                      <td colSpan={4} className="py-8 text-center text-[#5a6678]">אין הזמנות בסינון זה</td>
                     </tr>
                   )}
                 </tbody>

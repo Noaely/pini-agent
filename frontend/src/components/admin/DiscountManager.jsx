@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
 import Modal from './shared/Modal'
 import Toast from './shared/Toast'
+import Pagination from './shared/Pagination'
+
+const PAGE_SIZE = 20
 
 export default function DiscountManager() {
   const [tab, setTab] = useState('scraped')
@@ -8,6 +11,7 @@ export default function DiscountManager() {
   const [custom, setCustom] = useState([])
   const [allProducts, setAllProducts] = useState([])
   const [search, setSearch] = useState('')
+  const [page, setPage] = useState(1)
   const [showModal, setShowModal] = useState(false)
   const [editing, setEditing] = useState(null)
   const [form, setForm] = useState({ title: '', description: '', amount: '', min_products: '1', applicable_products: [] })
@@ -82,6 +86,11 @@ export default function DiscountManager() {
   const q = search.trim()
   const displayed = (tab === 'scraped' ? scraped : custom)
     .filter(d => !q || (d.title || '').includes(q))
+
+  const pageCount = Math.ceil(displayed.length / PAGE_SIZE)
+  const pageItems = displayed.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+
+  useEffect(() => { setPage(1) }, [tab, search])
 
   return (
     <>
@@ -160,7 +169,7 @@ export default function DiscountManager() {
               </tr>
             </thead>
             <tbody>
-              {displayed.map(d => (
+              {pageItems.map(d => (
                 <tr key={d.id} className="border-b border-[#eef1f6] last:border-0 hover:bg-[#f4f7fb] transition-colors">
                   <td className="py-3 px-2 text-[#0d1b2e] font-medium">{d.title}</td>
                   <td className="py-3 px-2">
@@ -214,6 +223,8 @@ export default function DiscountManager() {
             </tbody>
           </table>
         </div>
+
+        <Pagination page={page} pageCount={pageCount} onChange={setPage} />
 
         <div className="mt-4 pt-3 border-t border-[#eef1f6] text-xs text-[#5a6678]">
           {tab === 'scraped'

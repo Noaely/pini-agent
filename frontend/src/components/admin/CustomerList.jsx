@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react'
+import Pagination from './shared/Pagination'
+
+const PAGE_SIZE = 20
 
 const DEMO_CUSTOMERS = [
   { name: 'אפרת מוסה', phone: '972521000017', status: 'הזמנה נסגרה', lastActivity: '2026-04-23T09:45:00Z' },
@@ -50,6 +53,7 @@ export default function CustomerList() {
   const [loading, setLoading]     = useState(true)
   const [activeFilter, setActiveFilter] = useState('הכל')
   const [search, setSearch]       = useState('')
+  const [page, setPage]           = useState(1)
 
   useEffect(() => {
     fetch('/api/admin/analytics')
@@ -59,12 +63,17 @@ export default function CustomerList() {
       .finally(() => setLoading(false))
   }, [])
 
+  useEffect(() => { setPage(1) }, [activeFilter, search])
+
   const q = search.trim()
   const filtered = customers.filter(c => {
     const matchF = activeFilter === 'הכל' || c.status === activeFilter
     const matchQ = !q || (c.name || '').includes(q) || (c.phone || '').includes(q)
     return matchF && matchQ
   })
+
+  const pageCount = Math.ceil(filtered.length / PAGE_SIZE)
+  const pageItems = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
   return (
     <>
@@ -129,7 +138,7 @@ export default function CustomerList() {
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((c, idx) => {
+                {pageItems.map((c, idx) => {
                   const s = STATUS_STYLE[c.status] ?? STATUS_STYLE['אין מענה']
                   return (
                     <tr key={idx} className="border-b border-[#eef1f6] last:border-0 hover:bg-[#f4f7fb] transition-colors">
@@ -162,8 +171,10 @@ export default function CustomerList() {
           </div>
         )}
 
+        <Pagination page={page} pageCount={pageCount} onChange={setPage} />
+
         <div className="mt-4 pt-3 border-t border-[#eef1f6] text-xs text-[#5a6678]">
-          מוצגים {filtered.length} מתוך {customers.length} לקוחות
+          מוצגים {pageItems.length} מתוך {filtered.length} לקוחות
         </div>
       </section>
     </>

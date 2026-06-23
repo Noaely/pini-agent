@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react'
 import Modal from './shared/Modal'
 import Toast from './shared/Toast'
+import Pagination from './shared/Pagination'
+
+const PAGE_SIZE = 20
 
 export default function ProductManager() {
   const [products, setProducts] = useState([])
   const [search, setSearch] = useState('')
   const [categoryFilter, setCategoryFilter] = useState('הכל')
+  const [page, setPage] = useState(1)
   const [showModal, setShowModal] = useState(false)
   const [editing, setEditing] = useState(null)
   const [form, setForm] = useState({ name: '', category: '', price: '', unit: 'ק״ג' })
@@ -26,6 +30,11 @@ export default function ProductManager() {
     const matchCat = categoryFilter === 'הכל' || p.category === categoryFilter
     return matchSearch && matchCat
   })
+
+  const pageCount = Math.ceil(filtered.length / PAGE_SIZE)
+  const pageItems = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+
+  useEffect(() => { setPage(1) }, [search, categoryFilter])
 
   function openNew() {
     setEditing(null)
@@ -112,7 +121,7 @@ export default function ProductManager() {
               </tr>
             </thead>
             <tbody>
-              {filtered.map(p => (
+              {pageItems.map(p => (
                 <tr key={`${p.source}-${p.id}`} className="border-b border-[#eef1f6] last:border-0 hover:bg-[#f4f7fb] transition-colors">
                   <td className="py-3 px-2 text-[#0d1b2e] font-medium">{p.name}</td>
                   <td className="py-3 px-2">
@@ -155,8 +164,10 @@ export default function ProductManager() {
           </table>
         </div>
 
+        <Pagination page={page} pageCount={pageCount} onChange={setPage} />
+
         <div className="mt-4 pt-3 border-t border-[#eef1f6] text-xs text-[#5a6678]">
-          מוצגים {filtered.length} מתוך {products.length} מוצרים
+          מוצגים {pageItems.length} מתוך {filtered.length} מוצרים
         </div>
       </section>
 
